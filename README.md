@@ -31,9 +31,8 @@ provenance cannot exist, let alone be serialized. The full rules live in the [ch
   `UnitConversionProvider` for unit factors. An external rate service, a manually administered
   table, a bank feed, and a contractual fixed rate are all implementations of the same port.
 - **Kumwe App** (consumer #1, never owner) implements the SPI that contributes providers into an
-  installation, the runtime catalogs the pipelines consult, the `class_alias` shims preserving
-  every pinned `Kumwe\App\...` name, the storage of exact values, and every surface that renders a
-  converted figure with its provenance.
+  installation, the runtime catalogs the pipelines consult, the storage of exact values, and every
+  surface that renders a converted figure with its provenance.
 
 ## Status
 

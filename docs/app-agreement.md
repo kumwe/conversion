@@ -9,9 +9,9 @@ extension API, and the promises below are what keep "drop-in" true release after
 
 - **This package** owns the canonical classes: the exact decimal kernel, the value types, the
   conversion contract, the pipelines, and the provider ports, under `Kumwe\Conversion\`.
-- **The App** owns adoption: the exact version pin, the `class_alias` shims, the extension SPI
-  (registrars, definition types, admission bounds), the runtime catalogs, storage of exact values,
-  and every surface that renders a converted figure with its provenance.
+- **The App** owns adoption: the exact version pin, the extension SPI (registrars, definition
+  types, admission bounds), the runtime catalogs, storage of exact values, and every surface that
+  renders a converted figure with its provenance.
 - **Extensions** own rates and conversion tables, behind the ports defined here, contributed
   through the App's SPI.
 
@@ -24,9 +24,11 @@ extension API, and the promises below are what keep "drop-in" true release after
 2. **The pinned fixtures are the authority.** The App's compatibility fixtures —
    `tests/Fixtures/ExtensionApi/money-rate-provider-v1.json` and
    `tests/Fixtures/ExtensionApi/unit-conversion-provider-v1.json` — pin the extension-facing
-   surface by FQCN and signature. They are never rewritten. A release of this package that would
-   require editing either fixture is not adoptable at the current generation: an incompatible
-   surface is a successor generation on the App side, with a new fixture beside the old one.
+   surface by FQCN and signature. They are re-recorded at the canonical `Kumwe\Conversion\` names
+   exactly once, in the adoption change, as its stated generation action; from then on they are
+   never rewritten. A release of this package that would require editing either fixture is not
+   adoptable at the current generation: an incompatible surface is a successor generation on the
+   App side, with a new fixture beside the old one.
 3. **Identity is proven on every re-pin.** The App's full suite, unchanged, is the acceptance test
    for a new pin. A pin that needs an App test edited is refused, and the difference is a finding
    in this repository.
@@ -34,17 +36,20 @@ extension API, and the promises below are what keep "drop-in" true release after
    without touching the pinned generation. Major: anything a consumer must act on. This package
    versions independently; alignment travels through the pin, never through matching numbers.
 
-## The alias contract
+## The rename record
 
-The extension API was published under `Kumwe\App\...` names and those names are **pinned: they
-never break**. The App carries a `class_alias` shim for every FQCN below, resolving the historical
-name to the canonical class in this package. Aliases bind per class; they are loaded by the App's
-bootstrap before any extension code runs; they exist for the life of the pinned generation —
-which has no planned end.
+The canonical `Kumwe\Conversion\` names are **the only names**. The App's adoption change migrates
+every reference — imports, FQCN strings, docblocks, its classification and its
+compatibility-fixture records — to the canonical names, deletes its copies, and retires the
+historical `Kumwe\App\...` names in that same change: the pinned fixture records are re-recorded
+at the canonical names as a one-time, deliberate generation action — legitimate because no
+third-party extension was ever published against the historical names — and from then on the
+never-rewritten rule applies to the canonical-name records. No compatibility layer, no maintenance
+surface: nothing resolves a retired name. The table below remains as the historical record of what
+moved where; each canonical name is under `Kumwe\Conversion\`, each retired name was under
+`Kumwe\App\`.
 
-Canonical name (here) ↔ historical name (aliased in the App):
-
-| `Kumwe\Conversion\...` | `Kumwe\App\...` |
+| Canonical name (here) | Retired name (removed from the App) |
 | --- | --- |
 | `Decimal\ExactDecimal` | `BusinessRecord\Domain\ExactDecimal` |
 | `Decimal\ExactDecimalArithmetic` | `BusinessRecord\Domain\ExactDecimalArithmetic` |
@@ -73,15 +78,17 @@ Canonical name (here) ↔ historical name (aliased in the App):
 Eight of these are pinned extension API v1 in the App's classification — `MoneyRateProvider` and
 `UnitConversionProvider` (the ports extensions implement), `MoneyConversionRequest` and
 `UnitConversionRequest` (received), `MoneyExchangeRate` and `UnitConversionFactor` (constructed),
-and the two rounding-mode enums whose case sets the fixtures enumerate. The remaining fifteen are
-aliased with the same permanence, because "published" is the bar, not "pinned": an extension or an
-App module that imported any of them keeps compiling.
+and the two rounding-mode enums whose case sets the fixtures enumerate. Extensions implement the
+canonical `Kumwe\Conversion\Provider\...` ports directly, and the App's compatibility fixtures
+record the canonical FQCNs from the adoption generation onward. The remaining fifteen are retired
+with the same finality: every App reference migrates in the adoption change, and no published
+third-party consumer of the historical names exists to break.
 
-Not aliased, because they do not move: `MoneyRateProviderRegistrar`,
-`UnitConversionProviderRegistrar`, `UnitConversionProviderDefinition`, and
-`MoneyRateProviderDefinition` (SPI, App authority — note that the last lives in
-`BusinessRecord\Domain` yet implements the App's `ContributionDefinition`), and the runtime
-catalog implementations under `BusinessRecord\Infrastructure`.
+Unmoved — App authority: `MoneyRateProviderRegistrar`, `UnitConversionProviderRegistrar`,
+`UnitConversionProviderDefinition`, and `MoneyRateProviderDefinition` (SPI — note that the last
+lives in `BusinessRecord\Domain` yet implements the App's `ContributionDefinition`), and the
+runtime catalog implementations under `BusinessRecord\Infrastructure`. They do not move and they
+do not rename.
 
 ## Rates never enter this package
 

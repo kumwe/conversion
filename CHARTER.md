@@ -93,16 +93,23 @@ from its own provenance. An encoder cannot drop the fields because no object wit
 
 The `MoneyRateProvider` interface and its companion types are pinned extension API v1 in the App's
 classification and its `money-rate-provider-v1` / `unit-conversion-provider-v1` compatibility
-fixtures, under their `Kumwe\App\...` names. Extraction must not move that surface an inch:
+fixtures — published historically under `Kumwe\App\...` names, recorded at the canonical names
+from the adoption change onward. Extraction must not move that surface an inch in behaviour:
 
 - **Canonical namespace here.** Every extracted type lives under `Kumwe\Conversion\` in this
   repository, which is its one canonical home from the first release onward.
-- **Alias shims in the App.** The App carries a `class_alias` shim for every pinned and previously
-  published `Kumwe\App\...` FQCN, resolving to the canonical class here. An extension compiled
-  against the pinned names keeps working without recompilation, forever within the generation.
-- **Identity proven, not asserted.** The App's full existing test suite, its compatibility fixtures,
-  and its architecture boundary tests run green, unchanged, against the extracted package before
-  the extraction is claimed. The fixtures are not edited; they are the proof.
+- **Canonical names everywhere.** The canonical `Kumwe\Conversion\` names are the only names. The
+  App's adoption change migrates every reference — imports, FQCN strings, docblocks, its
+  classification and its compatibility-fixture records — to the canonical names, deletes its
+  copies, and retires the historical `Kumwe\App\...` names in that same change. No compatibility
+  layer, no maintenance surface: nothing resolves a retired name, and nothing has to, because no
+  third-party extension was ever published against the historical names. The rename record in
+  [`docs/app-agreement.md`](docs/app-agreement.md) is the historical record of what moved where.
+- **Identity proven, not asserted.** The App's full test suite and its architecture boundary tests
+  run green with assertions unchanged against the extracted package before the adoption is
+  claimed. The pinned-surface records — the compatibility fixtures and the classification — are
+  re-recorded at the canonical names once, in the adoption change, as its stated generation
+  action; they are the proof thereafter, under the never-rewritten rule.
 
 The protocol both repositories follow is recorded in [`docs/app-agreement.md`](docs/app-agreement.md).
 
@@ -113,9 +120,9 @@ The protocol both repositories follow is recorded in [`docs/app-agreement.md`](d
 ## Relationships
 
 - **With Kumwe App** ([`kumwe/app`](https://github.com/kumwe/app)): the App is Conversion's first
-  consumer, never its owner. The App pins an exact version, keeps the alias shims, owns the SPI that
-  contributes providers, and owns every surface that renders a converted figure. The agreement is
-  recorded in [`docs/app-agreement.md`](docs/app-agreement.md).
+  consumer, never its owner. The App pins an exact version, imports the canonical names directly,
+  owns the SPI that contributes providers, and owns every surface that renders a converted figure.
+  The agreement is recorded in [`docs/app-agreement.md`](docs/app-agreement.md).
 - **With extensions**: extensions are the provider implementors. A rate package implements
   `MoneyRateProvider`; a unit-table package implements `UnitConversionProvider`; both reach an
   installation only through the App's contribution SPI and are withdrawn with their package. Their
