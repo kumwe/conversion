@@ -19,6 +19,6 @@ Version policy:
 
 - **Patch** — behaviour fixes that keep every exported shape, grammar, and refusal identical.
 - **Minor** — new capability that no existing consumer must act on.
-- **Major** — a change a consumer must act on; the App agreement's alias table and pinned
+- **Major** — a change a consumer must act on; the App agreement's rename record and pinned
   behaviour make any observable difference a major by definition.
 - While the extraction is settling, the library stays `0.x` and the App pins exactly.

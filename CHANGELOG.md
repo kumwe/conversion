@@ -3,6 +3,23 @@
 Delivered work only, newest first; open work lives in [`docs/roadmap.md`](docs/roadmap.md). A phase
 is recorded here in the change that completes it, when its stated proof passes on a clean clone.
 
+## 0.1.1 - 2026-08-28
+
+- **Direct consumption replaces the planned alias layer.** The canonical `Kumwe\Conversion\` names
+  are the only names, by decision: the App's adoption change (C-4) migrates every reference —
+  imports, FQCN strings, docblocks, its classification and its compatibility-fixture records — to
+  the canonical names, deletes its copies, and retires the historical `Kumwe\App\...` names in
+  that same change, re-recording the pinned fixture records at the canonical names as a one-time,
+  deliberate generation action — legitimate because no third-party extension was ever published
+  against the historical names. No `class_alias`, no compatibility layer, no maintenance surface.
+  The App agreement now carries the rename record — the 23-FQCN table kept as the historical
+  record of what moved where — and its exact-pin protocol applies the never-rewritten rule to the
+  canonical-name records from the adoption generation onward.
+- **C-5 — Packagist.** `kumwe/conversion` is live on Packagist through the GitHub integration,
+  with releasing on the record: the `Release on record` workflow re-proves each newly recorded
+  version, tags it, and publishes the GitHub release, and Packagist follows the tags with no
+  credential in this repository.
+
 ## 0.1.0 - 2026-08-28
 
 - **C-3 — Requests, converters, pipelines, and the ports.** `MoneyConversionRequest`,
@@ -32,7 +49,7 @@ is recorded here in the change that completes it, when its stated proof passes o
   suite — boundary and round-trip cases, every rounding rule at the tie, remainder and carry
   boundaries, literal reconstitution — with every documented refusal provoked and asserted.
 - **Founding.** The charter with its never-list, the engineering standard inherited from the App,
-  the App agreement carrying the exact-pin protocol and the 23-FQCN alias table the App-side shims
-  consume, the phased roadmap where every phase names its proof, the package skeleton, and the
-  check lane (`composer check`: lint, the member documentation gate, the dependency-free suite),
-  now run by continuous integration on every push and pull request.
+  the App agreement carrying the exact-pin protocol and the 23-FQCN record of canonical against
+  historical names, the phased roadmap where every phase names its proof, the package skeleton,
+  and the check lane (`composer check`: lint, the member documentation gate, the dependency-free
+  suite), now run by continuous integration on every push and pull request.
