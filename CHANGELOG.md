@@ -5,6 +5,14 @@ is recorded here in the change that completes it, when its stated proof passes o
 
 ## Unreleased
 
+- **C-2 — The value types.** `MoneyValue`, `QuantityValue`, the two rounding-mode enums,
+  `MoneyExchangeRate`, `UnitConversionFactor`, `ConvertedMoneyValue` and `ConvertedQuantityValue`
+  extracted from Kumwe App into `Kumwe\Conversion\Value` with the whole provenance discipline:
+  constructor recomputation that makes a figure without provable provenance unconstructible, the
+  closed export shapes, and the portable string grammars, byte-for-byte in behaviour. The
+  construction, refusal and round-trip corpus of the App's contract and refusal tests is replayed —
+  `detect()` recognising exports and rejecting near-misses included — and the quantity-side refusal
+  corpus is mirrored onto the money types so every documented refusal is provoked.
 - **C-1 — The ExactDecimal kernel.** `ExactDecimal`, `ExactDecimalArithmetic` and
   `ExactRoundingRule` extracted from Kumwe App into `Kumwe\Conversion\Decimal`, byte-for-byte in
   behaviour: the same canonicalising factories, the same canonical form, the same refusal

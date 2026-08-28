@@ -8,7 +8,7 @@ code it replaces.
 
 ## Position
 
-Extracting. The ExactDecimal kernel (C-1) is delivered and recorded in
+Extracting. The ExactDecimal kernel (C-1) and the value types (C-2) are delivered and recorded in
 [`CHANGELOG.md`](../CHANGELOG.md). Everything below extracts code that today lives in Kumwe App under
 `Kumwe\App\BusinessRecord\Domain`, `Kumwe\App\BusinessRecord\Application`, and (deliberately left
 behind) `Kumwe\App\Extension\Contribution` — verified against the App working tree on 2026-08-28.
@@ -77,26 +77,6 @@ Two seams need care, recorded here so no phase discovers them mid-flight:
    and the ported blocks are reworded to say so without changing any signature.
 
 ## Phases
-
-### C-2 — The value types
-
-Extract the money and quantity vocabulary into `Kumwe\Conversion\Value`: `MoneyValue`,
-`QuantityValue`, the rounding-mode enums, `MoneyExchangeRate`, `UnitConversionFactor`, and the two
-converted value types with their whole provenance discipline — constructor recomputation, the
-closed export shapes, and the portable string grammars.
-
-**Proof.** Construction and refusal tests for every type: what each constructor admits, and each
-documented `InvalidArgumentException` provoked and asserted. Unconstructibility proofs for
-`ConvertedMoneyValue` and `ConvertedQuantityValue` — a wrong-pair rate, a product that is not the
-exact product, a rounding that does not follow from the declared mode, each refused. Round trips
-byte-identical: `toArray`/`fromArray` and `toPortableString`/`fromPortableString`, replaying the
-value-shape cases of the App's `MoneyConversionContractTest` and `UnitConversionContractTest`,
-including `detect()` recognising exports and rejecting near-misses.
-
-**Non-goals.** No presentation: locale formatting of a figure is ICU territory in the App
-(its ADR 0002) and never enters this package. No rate data: test vectors carry rates and factors
-as inputs of a proof, never as a shipped table, default, or lookup. No widening of any export
-shape — a byte added to `toArray()` output is an App-facing surface change, not extraction.
 
 ### C-3 — Requests, converters, pipelines, and the ports
 
