@@ -36,10 +36,12 @@ provenance cannot exist, let alone be serialized. The full rules live in the [ch
 
 ## Status
 
-**Founding.** This repository currently carries the charter, the engineering standard, the check
-lane, and the extraction roadmap — no extracted code yet. Extraction proceeds in the verified
-phases recorded in [`docs/roadmap.md`](docs/roadmap.md); the protocol with the App is in
-[`docs/app-agreement.md`](docs/app-agreement.md). The check lane already runs:
+**Extracted and published.** All twenty-three inventoried types are here — the exact decimal
+kernel, the value types, the conversion contract, the pipelines, and the provider ports — proven
+byte-for-byte against the Kumwe App originals and released on
+[Packagist](https://packagist.org/packages/kumwe/conversion). The remaining phase, the App
+consuming the package directly, is recorded in [`docs/roadmap.md`](docs/roadmap.md); the protocol
+with the App is in [`docs/app-agreement.md`](docs/app-agreement.md). The check lane runs:
 
 ```bash
 composer check   # lint + documentation gate + dependency-free suite
