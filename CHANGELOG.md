@@ -3,7 +3,7 @@
 Delivered work only, newest first; open work lives in [`docs/roadmap.md`](docs/roadmap.md). A phase
 is recorded here in the change that completes it, when its stated proof passes on a clean clone.
 
-## Unreleased
+## 0.1.0 - 2026-08-28
 
 - **C-3 — Requests, converters, pipelines, and the ports.** `MoneyConversionRequest`,
   `UnitConversionRequest`, `MoneyConverter` and `QuantityConverter` extracted from Kumwe App into
@@ -31,3 +31,8 @@ is recorded here in the change that completes it, when its stated proof passes o
   with no `bcmath` and no `gmp`. The App's exact test corpus is replayed in the dependency-free
   suite — boundary and round-trip cases, every rounding rule at the tie, remainder and carry
   boundaries, literal reconstitution — with every documented refusal provoked and asserted.
+- **Founding.** The charter with its never-list, the engineering standard inherited from the App,
+  the App agreement carrying the exact-pin protocol and the 23-FQCN alias table the App-side shims
+  consume, the phased roadmap where every phase names its proof, the package skeleton, and the
+  check lane (`composer check`: lint, the member documentation gate, the dependency-free suite),
+  now run by continuous integration on every push and pull request.
