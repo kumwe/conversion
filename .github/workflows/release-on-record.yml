@@ -132,7 +132,7 @@ jobs:
             gh release create "v$VERSION" \
               --verify-tag \
               --title "v$VERSION" \
-              --notes "Extracted from Kumwe App as a drop-in replacement; the consumer obligations and the alias table live in docs/app-agreement.md. Changelog: CHANGELOG.md section $VERSION."
+              --notes "Extracted from Kumwe App as a drop-in replacement; the consumer obligations and the rename record live in docs/app-agreement.md. Changelog: CHANGELOG.md section $VERSION."
           else
             echo "$probe"
             echo "::error::Could not determine whether release v$VERSION exists."
