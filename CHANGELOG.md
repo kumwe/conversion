@@ -5,6 +5,17 @@ is recorded here in the change that completes it, when its stated proof passes o
 
 ## Unreleased
 
+- **C-3 — Requests, converters, pipelines, and the ports.** `MoneyConversionRequest`,
+  `UnitConversionRequest`, `MoneyConverter` and `QuantityConverter` extracted from Kumwe App into
+  `Kumwe\Conversion\Contract`; the provider and catalog ports, the refusal exceptions and the two
+  pipelines into `Kumwe\Conversion\Provider` — byte-for-byte in behaviour, with the catalog
+  docblocks reworded to describe the port neutrally (a host supplies the catalog; the Kumwe App
+  implementation reads its extension contribution registry). The App's refusal corpus is replayed
+  with in-suite scripted catalogs and providers: declared order respected, a declining provider
+  passed over unasked, a misattributed, mispriced or postdated answer refused with its cause kept,
+  a provider that accepts and then cannot source propagating its typed refusal, an empty catalog
+  refusing, and no answer that does not carry its rate or factor, as-at instant, provider identity
+  and declared rounding.
 - **C-2 — The value types.** `MoneyValue`, `QuantityValue`, the two rounding-mode enums,
   `MoneyExchangeRate`, `UnitConversionFactor`, `ConvertedMoneyValue` and `ConvertedQuantityValue`
   extracted from Kumwe App into `Kumwe\Conversion\Value` with the whole provenance discipline:

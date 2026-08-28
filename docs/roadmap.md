@@ -8,21 +8,23 @@ code it replaces.
 
 ## Position
 
-Extracting. The ExactDecimal kernel (C-1) and the value types (C-2) are delivered and recorded in
-[`CHANGELOG.md`](../CHANGELOG.md). Everything below extracts code that today lives in Kumwe App under
-`Kumwe\App\BusinessRecord\Domain`, `Kumwe\App\BusinessRecord\Application`, and (deliberately left
-behind) `Kumwe\App\Extension\Contribution` — verified against the App working tree on 2026-08-28.
+Extracted. The whole conversion contract — the Decimal, Value, Contract and Provider layers
+(C-1 to C-3) — is delivered and recorded in [`CHANGELOG.md`](../CHANGELOG.md). Everything below
+adopts the package in the App and publishes it. The inventory stays, in the past tense, because it
+is the normative file list for the App's adoption (C-4): what moved out of
+`Kumwe\App\BusinessRecord\Domain` and `Kumwe\App\BusinessRecord\Application`, and what
+(deliberately) stayed behind — verified against the App working tree on 2026-08-28.
 
 ## The extraction inventory
 
-What moves, from where, at what size, with what couplings. Every type below depends only on PHP
+What moved, from where, at what size, with what couplings. Every type below depends only on PHP
 core (`InvalidArgumentException`, `Stringable`, `DateTimeImmutable`, `RuntimeException`) and on
 other types in this same inventory — no Doctrine, no PSR interfaces, no App services — which is
 what makes the extraction mechanical once the seams below are respected.
 
 From `src/BusinessRecord/Domain/` (namespace `Kumwe\App\BusinessRecord\Domain`):
 
-| File | Lines | Moves to layer |
+| File | Lines | Layer |
 | --- | --- | --- |
 | `ExactDecimal.php` | 195 | Decimal |
 | `ExactDecimalArithmetic.php` | 247 | Decimal |
@@ -42,7 +44,7 @@ From `src/BusinessRecord/Domain/` (namespace `Kumwe\App\BusinessRecord\Domain`):
 
 From `src/BusinessRecord/Application/` (namespace `Kumwe\App\BusinessRecord\Application`):
 
-| File | Lines | Moves to layer |
+| File | Lines | Layer |
 | --- | --- | --- |
 | `MoneyRateProvider.php` | 65 | Provider |
 | `UnitConversionProvider.php` | 66 | Provider |
@@ -77,29 +79,6 @@ Two seams need care, recorded here so no phase discovers them mid-flight:
    and the ported blocks are reworded to say so without changing any signature.
 
 ## Phases
-
-### C-3 — Requests, converters, pipelines, and the ports
-
-Extract `MoneyConversionRequest`, `UnitConversionRequest`, `MoneyConverter`, and
-`QuantityConverter` into `Kumwe\Conversion\Contract`; extract the ports and pipelines —
-`MoneyRateProvider`, `UnitConversionProvider`, the two catalog ports, the two refusal exceptions,
-and the two pipelines — into `Kumwe\Conversion\Provider`.
-
-**Proof.** Provenance-carriage tests: the only type either pipeline can return is a converted
-value, and the suite proves the pipeline cannot emit a figure without rate or factor, as-at
-instant, provider identity, and declared rounding, because no other return shape exists. The App's
-refusal corpus replayed: a rate attributed to another provider, a rate pricing another pair, a
-rate postdating the instant asked about, a provider that accepts then throws, and no entitled
-provider at all — each raising `MoneyRateUnavailable`/`UnitConversionUnavailable` with the App's
-conditions (cases from `UnitConversionRefusalTest`, `UnitConversionPipelineRefusalTest`, and the
-contract halves of `MoneyRateProviderContributionTest`). Catalog injection proven with in-suite
-fake catalogs: declared order respected, `supports()` false moves on, empty catalog refuses.
-
-**Non-goals.** No catalog implementation — `RuntimeMoneyRateProviderCatalog` and
-`RuntimeUnitConversionProviderCatalog` read the App's extension contribution registry and stay
-there. No registrars and no definition types (the SPI seam above). No admission policy: which
-providers are entitled, in what order, under what declared-currency bounds, is the catalog
-implementor's authority. No triangulation, base-currency routing, or rate policy of any kind.
 
 ### C-4 — The App consumes the package
 
