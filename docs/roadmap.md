@@ -8,8 +8,8 @@ code it replaces.
 
 ## Position
 
-Founding. The charter, the engineering standard, and the check lane exist; `src/` is empty and the
-lane proves the tooling itself. Everything below extracts code that today lives in Kumwe App under
+Extracting. The ExactDecimal kernel (C-1) is delivered and recorded in
+[`CHANGELOG.md`](../CHANGELOG.md). Everything below extracts code that today lives in Kumwe App under
 `Kumwe\App\BusinessRecord\Domain`, `Kumwe\App\BusinessRecord\Application`, and (deliberately left
 behind) `Kumwe\App\Extension\Contribution` — verified against the App working tree on 2026-08-28.
 
@@ -77,24 +77,6 @@ Two seams need care, recorded here so no phase discovers them mid-flight:
    and the ported blocks are reworded to say so without changing any signature.
 
 ## Phases
-
-### C-1 — The ExactDecimal kernel
-
-Extract `ExactDecimal`, `ExactDecimalArithmetic`, and `ExactRoundingRule` into
-`Kumwe\Conversion\Decimal`, byte-for-byte in behaviour: same factories, same canonical form, same
-refusal conditions, same `MAXIMUM_PRECISION` of 65, pure digit-string arithmetic with no `bcmath`
-and no `gmp`.
-
-**Proof.** The App's exact test corpus replayed here in the dependency-free suite: the cases of
-`tests/Unit/BusinessRecord/Domain/ExactDecimalTest.php` plus every arithmetic and rounding case
-embedded in the App's `MoneyConversionContractTest` and `UnitConversionContractTest` (canonical
-form, negative zero, padding, `multiply` exactness, every rounding mode at every boundary digit,
-`fromLiteral` refusals). Determinism: identical bytes across two runs. `composer check` green.
-
-**Non-goals.** No new arithmetic — the kernel ships exactly what the App ships (`multiply`,
-`round`, `fromLiteral`, the canonicalising factories) and nothing speculative such as addition or
-division; drop-in, not mutation. No float bridge in either direction. No storage codec —
-`RecordValueCodec` and `RecordValueGuard` are App write-path authority and never move.
 
 ### C-2 — The value types
 
