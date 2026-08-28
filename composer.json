@@ -1,0 +1,37 @@
+{
+  "name": "kumwe/conversion",
+  "description": "The money and quantity conversion contract of the Kumwe family: the exact decimal kernel, typed money and quantity values, converted values that always carry their rate and as-at instant, and the provider ports rate and unit extensions implement. Core ships no rate and no conversion table.",
+  "type": "library",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/kumwe/conversion",
+  "support": {
+    "issues": "https://github.com/kumwe/conversion/issues",
+    "source": "https://github.com/kumwe/conversion"
+  },
+  "require": {
+    "php": "^8.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kumwe\\Conversion\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kumwe\\Conversion\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "lint": "php tools/lint.php",
+    "docs": "php tools/check-docblocks.php",
+    "test": "php tests/run.php",
+    "check": [
+      "@lint",
+      "@docs",
+      "@test"
+    ]
+  },
+  "config": {
+    "sort-packages": true
+  }
+}
