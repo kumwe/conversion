@@ -36,8 +36,11 @@ const CONVERSION_API_EXTENSION_PROVIDER_TYPES = [
     'Kumwe\\Conversion\\Value\\UnitConversionFactor',
 ];
 
+/** @var list<string> $arguments */
+$arguments = $_SERVER['argv'] ?? [];
+
 try {
-    exit(conversionApiMain($argv));
+    exit(conversionApiMain($arguments));
 } catch (Throwable $error) {
     fwrite(STDERR, "Public API verification failed: {$error->getMessage()}\n");
     exit(1);
