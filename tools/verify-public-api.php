@@ -337,7 +337,7 @@ function conversionApiConstants(ReflectionClass $type, string $owner): array
         $constants[$constant->getName()] = [
             'visibility' => conversionApiVisibility($constant),
             'final' => $constant->isFinal(),
-            'type' => $constantType === null ? null : conversionApiReflectionType($constantType),
+            'type' => $constantType === null ? null : conversionApiReflectionType($constantType, $owner),
             'value' => conversionApiValue($constant->getValue()),
         ];
     }
@@ -374,7 +374,7 @@ function conversionApiProperties(ReflectionClass $type, string $owner): array
             'visibility' => conversionApiVisibility($property),
             'static' => $property->isStatic(),
             'readonly' => $property->isReadOnly(),
-            'type' => $propertyType === null ? null : conversionApiReflectionType($propertyType),
+            'type' => $propertyType === null ? null : conversionApiReflectionType($propertyType, $owner),
         ];
         if ($property->hasDefaultValue()) {
             $entry['default'] = conversionApiValue($property->getDefaultValue());
@@ -417,10 +417,10 @@ function conversionApiMethods(ReflectionClass $type, string $owner): array
             'abstract' => $method->isAbstract(),
             'returns_reference' => $method->returnsReference(),
             'parameters' => array_map(
-                static fn (ReflectionParameter $parameter): array => conversionApiParameter($parameter),
+                static fn (ReflectionParameter $parameter): array => conversionApiParameter($parameter, $owner),
                 $method->getParameters(),
             ),
-            'return_type' => $returnType === null ? null : conversionApiReflectionType($returnType),
+            'return_type' => $returnType === null ? null : conversionApiReflectionType($returnType, $owner),
         ];
     }
     ksort($methods, SORT_STRING);
@@ -432,17 +432,18 @@ function conversionApiMethods(ReflectionClass $type, string $owner): array
  * Render one ordered method parameter.
  *
  * @param   ReflectionParameter  $parameter  Reflected parameter.
+ * @param   string               $owner      Canonical declaring type name.
  *
  * @return  array<string, mixed>  Compatibility-relevant parameter shape.
  *
  * @since   0.1.2
  */
-function conversionApiParameter(ReflectionParameter $parameter): array
+function conversionApiParameter(ReflectionParameter $parameter, string $owner): array
 {
     $type = $parameter->getType();
     $entry = [
         'name' => $parameter->getName(),
-        'type' => $type === null ? null : conversionApiReflectionType($type),
+        'type' => $type === null ? null : conversionApiReflectionType($type, $owner),
         'by_reference' => $parameter->isPassedByReference(),
         'variadic' => $parameter->isVariadic(),
         'optional' => $parameter->isOptional(),
@@ -479,7 +480,7 @@ function conversionApiEnum(ReflectionEnum $enum): array
     }
 
     return [
-        'backing_type' => $backingType === null ? null : conversionApiReflectionType($backingType),
+        'backing_type' => $backingType === null ? null : conversionApiReflectionType($backingType, $enum->getName()),
         'cases' => $cases,
     ];
 }
@@ -487,24 +488,40 @@ function conversionApiEnum(ReflectionEnum $enum): array
 /**
  * Render a named, union, or intersection type without import abbreviations.
  *
- * @param   ReflectionType  $type  Reflected declaration type.
+ * @param   ReflectionType  $type   Reflected declaration type.
+ * @param   string          $owner  Canonical declaring type name used to normalize relative types.
  *
  * @return  string  Canonical type expression.
  *
  * @since   0.1.2
  */
-function conversionApiReflectionType(ReflectionType $type): string
+function conversionApiReflectionType(ReflectionType $type, string $owner): string
 {
     if ($type instanceof ReflectionNamedType) {
         $name = $type->getName();
+        if ($name === 'self') {
+            $name = $owner;
+        } elseif ($name === 'parent') {
+            $parent = get_parent_class($owner);
+            if ($parent === false) {
+                throw new RuntimeException("Relative parent type on {$owner} has no parent class.");
+            }
+            $name = $parent;
+        }
 
         return $type->allowsNull() && !in_array($name, ['mixed', 'null'], true) ? '?' . $name : $name;
     }
     if ($type instanceof ReflectionUnionType) {
-        return implode('|', array_map(conversionApiReflectionType(...), $type->getTypes()));
+        return implode('|', array_map(
+            static fn (ReflectionType $member): string => conversionApiReflectionType($member, $owner),
+            $type->getTypes(),
+        ));
     }
     if ($type instanceof ReflectionIntersectionType) {
-        return implode('&', array_map(conversionApiReflectionType(...), $type->getTypes()));
+        return implode('&', array_map(
+            static fn (ReflectionType $member): string => conversionApiReflectionType($member, $owner),
+            $type->getTypes(),
+        ));
     }
 
     throw new RuntimeException('Unknown reflection type kind ' . $type::class . '.');

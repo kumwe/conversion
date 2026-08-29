@@ -380,7 +380,7 @@
                     "parameters": [
                         {
                             "name": "other",
-                            "type": "self",
+                            "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
                             "by_reference": false,
                             "variadic": false,
                             "optional": false
@@ -417,7 +417,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "fromString": {
                     "visibility": "public",
@@ -448,7 +448,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "value": {
                     "visibility": "public",
@@ -1012,7 +1012,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "?self"
+                    "return_type": "?Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 },
                 "fromArray": {
                     "visibility": "public",
@@ -1029,7 +1029,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 },
                 "fromPortableString": {
                     "visibility": "public",
@@ -1046,7 +1046,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 },
                 "isPortableString": {
                     "visibility": "public",
@@ -1186,7 +1186,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
                 },
                 "fromPortableString": {
                     "visibility": "public",
@@ -1203,7 +1203,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
                 },
                 "isPortableString": {
                     "visibility": "public",
@@ -1350,7 +1350,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Value\\MoneyExchangeRate"
                 },
                 "instant": {
                     "visibility": "public",
@@ -1776,7 +1776,7 @@
                             "optional": false
                         }
                     ],
-                    "return_type": "self"
+                    "return_type": "Kumwe\\Conversion\\Value\\UnitConversionFactor"
                 },
                 "instant": {
                     "visibility": "public",
