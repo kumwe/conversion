@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Prove the installed Composer autoloader exposes the complete public API.
+ * Prove the installed production Composer autoloader exposes the complete public API.
  *
- * This deliberately loads the checked-in public API manifest rather than a
- * second hand-maintained class list. The smoke test therefore proves both the
- * PSR-4 package metadata and every public type consumers are promised.
+ * The script is itself a shipped package resource, so the same proof runs in the source checkout and
+ * again after the exported consumer archive has been extracted. Its type list comes only from the
+ * canonical package-owned public API manifest.
  *
  * @since 0.1.2
  */
 
 declare(strict_types=1);
 
-$root = dirname(__DIR__);
+$root = dirname(__DIR__, 2);
 $autoload = $root . '/vendor/autoload.php';
 $manifestPath = $root . '/resources/public-api/v1.json';
 
@@ -24,7 +24,7 @@ if (!is_file($autoload)) {
 require $autoload;
 
 $contents = file_get_contents($manifestPath);
-if ($contents === false) {
+if (!is_string($contents)) {
     fwrite(STDERR, "Composer autoload smoke failed: the public API manifest is unreadable.\n");
     exit(1);
 }

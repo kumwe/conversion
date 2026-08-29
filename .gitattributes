@@ -7,5 +7,10 @@
 /.editorconfig export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
+/.phpstan.cache export-ignore
+/CHARTER.md export-ignore
+/composer.lock export-ignore
+/dist export-ignore
 /phpcs.xml export-ignore
 /phpstan.neon export-ignore
+/vendor export-ignore

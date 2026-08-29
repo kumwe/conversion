@@ -4,6 +4,7 @@ parameters:
   paths:
     - src
     - tools/verify-public-api.php
+    - resources/toolchain
   tmpDir: .phpstan.cache
   treatPhpDocTypesAsCertain: false
   reportUnmatchedIgnoredErrors: true

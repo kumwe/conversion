@@ -33,7 +33,7 @@
     "docs": "php tools/check-docblocks.php",
     "api": "php tools/verify-public-api.php",
     "api:record": "php tools/verify-public-api.php --write",
-    "autoload:smoke": "php tools/autoload-smoke.php",
+    "autoload:smoke": "php resources/toolchain/autoload-smoke.php",
     "cs": "phpcs -q",
     "cs:fix": "phpcbf",
     "analyse": "phpstan analyse --no-progress --memory-limit=1G",

@@ -49,4 +49,33 @@ jobs:
       - name: Verify the no-dev installed-package autoloader
         run: |
           composer install --no-interaction --prefer-dist --no-dev --classmap-authoritative
-          php tools/autoload-smoke.php
+          composer autoload:smoke
+
+      - name: Verify the exported consumer archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          composer archive --format=zip --dir=dist --file=kumwe-conversion
+          archive="$(find dist -maxdepth 1 -type f -name 'kumwe-conversion*.zip' -print -quit)"
+          test -n "$archive"
+          root="$(mktemp -d)"
+          unzip -q "$archive" -d "$root"
+          package="$root"
+          if [ ! -d "$package/src" ]; then
+            mapfile -t packages < <(find "$root" -mindepth 1 -maxdepth 1 -type d -print)
+            test "${#packages[@]}" -eq 1
+            package="${packages[0]}"
+          fi
+          test "$(find "$package" -type f | wc -l)" -eq 29
+          test "$(find "$package/src" -type f -name '*.php' | wc -l)" -eq 23
+          test "$(find "$package/resources" -type f | wc -l)" -eq 2
+          test "$(find "$package" -maxdepth 1 -type f | wc -l)" -eq 4
+          test -f "$package/resources/public-api/v1.json"
+          test -f "$package/resources/toolchain/autoload-smoke.php"
+          for forbidden in .github .phpstan.cache docs tests tools vendor dist CHARTER.md \
+            composer.lock phpcs.xml phpstan.neon; do
+            test ! -e "$package/$forbidden"
+          done
+          composer --working-dir="$package" install \
+            --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          composer --working-dir="$package" autoload:smoke

@@ -4,6 +4,7 @@
     <file>src</file>
     <file>tests</file>
     <file>tools</file>
+    <file>resources/toolchain</file>
     <arg name="basepath" value="."/>
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
