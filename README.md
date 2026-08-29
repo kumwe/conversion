@@ -44,8 +44,15 @@ consuming the package directly, is recorded in [`docs/roadmap.md`](docs/roadmap.
 with the App is in [`docs/app-agreement.md`](docs/app-agreement.md). The check lane runs:
 
 ```bash
-composer check   # lint + documentation gate + dependency-free suite
+composer install
+composer check   # metadata, API, autoload, style, PHPStan max, docs, and tests
 ```
+
+The tests themselves remain dependency-free and can also be run directly with `php tests/run.php`.
+The complete public shape of all twenty-three canonical types is frozen in
+[`resources/public-api/v1.json`](resources/public-api/v1.json); `composer api` rejects drift.
+Its `extension-provider-v1` profile names the fifteen-type transitive surface provider extensions
+compile against, so the App can pin that package-owned evidence instead of maintaining a second copy.
 
 ## License
 

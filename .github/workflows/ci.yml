@@ -27,15 +27,26 @@ jobs:
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2.35.5
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, mbstring
           coverage: none
-          tools: none
+          tools: composer:v2
 
-      - name: Lint
-        run: php tools/lint.php
+      - name: Cache Composer package downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/composer/files
+          key: composer-files-${{ hashFiles('composer.json') }}
+          restore-keys: composer-files-
 
-      - name: Verify member documentation
-        run: php tools/check-docblocks.php
+      - name: Install the validated package toolchain
+        run: |
+          composer validate --strict
+          composer install --no-interaction --prefer-dist
+          composer audit --abandoned=fail
 
-      - name: Run the suite
-        run: php tests/run.php
+      - name: Run the complete package gate
+        run: composer check
+
+      - name: Verify the no-dev installed-package autoloader
+        run: |
+          composer install --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          php tools/autoload-smoke.php

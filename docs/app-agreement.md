@@ -29,9 +29,11 @@ extension API, and the promises below are what keep "drop-in" true release after
    never rewritten. A release of this package that would require editing either fixture is not
    adoptable at the current generation: an incompatible surface is a successor generation on the
    App side, with a new fixture beside the old one.
-3. **Identity is proven on every re-pin.** The App's full suite, unchanged, is the acceptance test
-   for a new pin. A pin that needs an App test edited is refused, and the difference is a finding
-   in this repository.
+3. **Identity is proven on every re-pin.** The package-owned extraction corpus and public-API
+   manifest are the first acceptance test. The App may delete only tests that duplicate that corpus;
+   its retained unit, integration, functional, and architecture assertions remain unchanged. A pin
+   that needs a retained App assertion edited is refused, and the difference is a finding in this
+   repository.
 4. **Version policy.** Patch: behaviour-identical fixes. Minor: additive surface the App may adopt
    without touching the pinned generation. Major: anything a consumer must act on. This package
    versions independently; alignment travels through the pin, never through matching numbers.
@@ -75,14 +77,15 @@ moved where; each canonical name is under `Kumwe\Conversion\`, each retired name
 | `Provider\MoneyConversionPipeline` | `BusinessRecord\Application\MoneyConversionPipeline` |
 | `Provider\UnitConversionPipeline` | `BusinessRecord\Application\UnitConversionPipeline` |
 
-Eight of these are pinned extension API v1 in the App's classification — `MoneyRateProvider` and
-`UnitConversionProvider` (the ports extensions implement), `MoneyConversionRequest` and
-`UnitConversionRequest` (received), `MoneyExchangeRate` and `UnitConversionFactor` (constructed),
-and the two rounding-mode enums whose case sets the fixtures enumerate. Extensions implement the
-canonical `Kumwe\Conversion\Provider\...` ports directly, and the App's compatibility fixtures
-record the canonical FQCNs from the adoption generation onward. The remaining fifteen are retired
-with the same finality: every App reference migrates in the adoption change, and no published
-third-party consumer of the historical names exists to break.
+The package's `resources/public-api/v1.json` owns the extension-facing
+`extension-provider-v1` profile. Its two roots are `MoneyRateProvider` and
+`UnitConversionProvider`; its fifteen-type closure also includes the request and evidence classes,
+both rounding modes and their shared rule, exact-decimal construction, the money and quantity values,
+and the two typed refusals. The App pins the profile digest and reads this package evidence rather than
+copying those class shapes into a second authority. Its classification and compatibility-generation
+records identify the canonical profile and digest from the adoption generation onward. The remaining
+eight package types are not extension-provider surface, but every historical App name is retired with
+the same finality: no published third-party consumer exists to break.
 
 Unmoved — App authority: `MoneyRateProviderRegistrar`, `UnitConversionProviderRegistrar`,
 `UnitConversionProviderDefinition`, and `MoneyRateProviderDefinition` (SPI — note that the last

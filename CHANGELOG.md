@@ -3,6 +3,27 @@
 Delivered work only, newest first; open work lives in [`docs/roadmap.md`](docs/roadmap.md). A phase
 is recorded here in the change that completes it, when its stated proof passes on a clean clone.
 
+## 0.1.2 - 2026-08-29
+
+- **The published API is now executable evidence.** A deterministic package-owned manifest freezes
+  the complete reflected shape of all twenty-three canonical public types. CI refuses an added,
+  removed, or changed type, constant, property, method, parameter, return, or enum case unless a
+  reviewed release deliberately records the new surface. Its `extension-provider-v1` profile owns
+  the exact fifteen-type transitive provider surface so App can pin its digest without duplicating
+  class shapes; no alias or historical namespace is introduced.
+- **The package gate now proves the distributed Composer library.** Strict Composer validation,
+  Composer-autoload smoke coverage for every public type, PSR-12, PHPStan level max with strict and
+  deprecation rules, syntax/member-documentation checks, and the behavioural suite all run before a
+  release. CI repeats the autoload proof after removing every development package and optimizing an
+  authoritative production classmap. Test discovery now fails when the suite or a discovered case is
+  empty.
+- **Release automation is least-authority and target-checked.** Read permission is the workflow
+  default, write permission exists only in the release job, and an existing version tag must resolve
+  to a release commit in `main` history whose newest changelog record matches the tag.
+- **C-4 proof wording matches the extraction.** Package-owned duplicate unit coverage moves out of
+  the App; the App's retained boundary, integration, functional, and architecture assertions remain
+  unchanged. The canonical separation still has no aliases, remapping, or compatibility layer.
+
 ## 0.1.1 - 2026-08-28
 
 - **Direct consumption replaces the planned alias layer.** The canonical `Kumwe\Conversion\` names

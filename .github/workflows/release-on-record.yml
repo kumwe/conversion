@@ -16,7 +16,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 # Serialized so two pushes cannot race past the tag-existence check; the
 # later run then finds the tag and verifies instead of colliding.
@@ -43,28 +43,35 @@ jobs:
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2.35.5
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, mbstring
           coverage: none
-          tools: none
+          tools: composer:v2
 
-      - name: Lint
-        run: php tools/lint.php
+      - name: Install the validated package toolchain
+        run: |
+          composer validate --strict
+          composer install --no-interaction --prefer-dist
+          composer audit --abandoned=fail
 
-      - name: Verify member documentation
-        run: php tools/check-docblocks.php
+      - name: Run the complete package gate
+        run: composer check
 
-      - name: Run the suite
-        run: php tests/run.php
+      - name: Verify the no-dev installed-package autoloader
+        run: |
+          composer install --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          php tools/autoload-smoke.php
 
   release:
     name: Release the recorded version
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - name: Check out the pushed commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
 
       # The newest release record is the FIRST second-level heading, so a
@@ -104,12 +111,28 @@ jobs:
           probe_status=0
           probe="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v$VERSION" 2>&1)" || probe_status=$?
           if [ "$probe_status" -eq 0 ]; then
-            echo "Tag v$VERSION already exists; leaving it untouched."
+            tag_type="$(jq -r '.object.type' <<<"$probe")"
+            tag_sha="$(jq -r '.object.sha' <<<"$probe")"
+            if [ "$tag_type" != commit ]; then
+              echo "::error::Tag v$VERSION points to $tag_type $tag_sha instead of a release commit."
+              exit 1
+            fi
+            if ! git merge-base --is-ancestor "$tag_sha" "$GITHUB_SHA"; then
+              echo "::error::Tag v$VERSION points outside the pushed main history: $tag_sha."
+              exit 1
+            fi
+            tagged_heading="$(git show "$tag_sha:CHANGELOG.md" | grep -m 1 -E '^## ')"
+            tagged_version="$(sed -nE 's/^## \[?([0-9]+\.[0-9]+\.[0-9]+)\]?( .*)?$/\1/p' <<<"$tagged_heading")"
+            if [ "$tagged_version" != "$VERSION" ]; then
+              echo "::error::Tag v$VERSION targets a commit whose newest release record is $tagged_version."
+              exit 1
+            fi
+            echo "Verified tag v$VERSION at release commit $tag_sha."
           elif grep -q 'HTTP 404' <<<"$probe"; then
             gh api "repos/$GITHUB_REPOSITORY/git/refs" \
               --field ref="refs/tags/v$VERSION" \
               --field sha="$GITHUB_SHA"
-            echo "Created tag v$VERSION at $GITHUB_SHA."
+            echo "Created tag v$VERSION at release commit $GITHUB_SHA."
           else
             echo "$probe"
             echo "::error::Could not determine whether tag v$VERSION exists."

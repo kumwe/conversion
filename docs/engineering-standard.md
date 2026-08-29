@@ -129,7 +129,20 @@ The suite exists to prove intended outcomes, and only that. The standard for eve
 
 ## The check lane
 
-`composer check` is the whole standard, executable: lint, documentation completeness, suite. Every
-commit passes it — including the founding state, where `src/` is empty and the lane proves the
-tooling itself. CI runs it on every supported PHP version; a release re-proves it on the tagged
-commit. There is no path to publication that skips it.
+After `composer install`, `composer check` is the whole standard, executable: strict Composer
+metadata validation, syntax linting, documentation completeness, the frozen public-API manifest,
+Composer-autoload proof, PSR-12 style, PHPStan at level max with strict and deprecation rules, and
+the dependency-free behavioural suite. Every commit passes it. CI runs it on every supported PHP
+version; a release re-proves it on the release-record commit. There is no path to publication that
+skips it. CI then removes every development package, rebuilds an authoritative production autoloader,
+and loads all twenty-three manifest types again, proving the distributed library does not rely on its
+quality toolchain.
+
+[`resources/public-api/v1.json`](../resources/public-api/v1.json) records all twenty-three public
+types, including class/interface/enum identity, inheritance, constants, properties, methods,
+parameters, return types, and enum cases. `composer api` compares source against that record. A
+reviewed compatible addition or successor surface is recorded explicitly with `composer
+api:record`; routine changes never rewrite the evidence merely to make the gate green.
+The manifest's `extension-provider-v1` profile records the two provider-port roots and their
+fifteen-type compile-time and construction/refusal closure. Consumers pin the profile digest and
+read that profile; they do not copy the package's class shapes into a second authority.
