@@ -98,12 +98,37 @@ jobs:
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
+      # Probe publication before accepting an existing tag. A release that
+      # already exists is an idempotent verification path; an unpublished
+      # tag must identify this exact commit after its complete check matrix.
+      - name: Check whether the GitHub release exists
+        if: steps.record.outputs.version != ''
+        id: publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.record.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          probe_status=0
+          probe="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" 2>&1)" || probe_status=$?
+          if [ "$probe_status" -eq 0 ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          elif grep -q 'HTTP 404' <<<"$probe"; then
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "$probe"
+            echo "::error::Could not determine whether release v$VERSION exists."
+            exit 1
+          fi
+
       # Only a confirmed 404 means the tag is missing; any other probe
       # failure stops the run rather than colliding with an existing tag.
       - name: Create the version tag when it is missing
         if: steps.record.outputs.version != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_EXISTS: ${{ steps.publication.outputs.exists }}
           VERSION: ${{ steps.record.outputs.version }}
         shell: bash
         run: |
@@ -127,8 +152,16 @@ jobs:
               echo "::error::Tag v$VERSION targets a commit whose newest release record is $tagged_version."
               exit 1
             fi
+            if [ "$RELEASE_EXISTS" != true ] && [ "$tag_sha" != "$GITHUB_SHA" ]; then
+              echo "::error::Unpublished tag v$VERSION points to $tag_sha, not this fully tested commit $GITHUB_SHA."
+              exit 1
+            fi
             echo "Verified tag v$VERSION at release commit $tag_sha."
           elif grep -q 'HTTP 404' <<<"$probe"; then
+            if [ "$RELEASE_EXISTS" = true ]; then
+              echo "::error::Release v$VERSION exists without its version tag."
+              exit 1
+            fi
             gh api "repos/$GITHUB_REPOSITORY/git/refs" \
               --field ref="refs/tags/v$VERSION" \
               --field sha="$GITHUB_SHA"
@@ -140,24 +173,14 @@ jobs:
           fi
 
       - name: Publish the GitHub release when it is missing
-        if: steps.record.outputs.version != ''
+        if: steps.record.outputs.version != '' && steps.publication.outputs.exists != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.record.outputs.version }}
         shell: bash
         run: |
           set -euo pipefail
-          probe_status=0
-          probe="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" 2>&1)" || probe_status=$?
-          if [ "$probe_status" -eq 0 ]; then
-            echo "Release v$VERSION already exists; leaving it untouched."
-          elif grep -q 'HTTP 404' <<<"$probe"; then
-            gh release create "v$VERSION" \
-              --verify-tag \
-              --title "v$VERSION" \
-              --notes "Extracted from Kumwe App as a drop-in replacement; the consumer obligations and the rename record live in docs/app-agreement.md. Changelog: CHANGELOG.md section $VERSION."
-          else
-            echo "$probe"
-            echo "::error::Could not determine whether release v$VERSION exists."
-            exit 1
-          fi
+          gh release create "v$VERSION" \
+            --verify-tag \
+            --title "v$VERSION" \
+            --notes "Extracted from Kumwe App as a drop-in replacement; the consumer obligations and the rename record live in docs/app-agreement.md. Changelog: CHANGELOG.md section $VERSION."
