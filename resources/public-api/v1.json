@@ -25,7 +25,7 @@
                 "Kumwe\\Conversion\\Value\\QuantityValue",
                 "Kumwe\\Conversion\\Value\\UnitConversionFactor"
             ],
-            "digest": "sha256:3f1a6cb4be348f1e958c71f0f88c764e1399860b2c548805e6d2cd41e1206c47"
+            "digest": "sha256:c2e371b2da3d2f22c21e1be1c779dda339cb75e5070f1c594725d0e051751bd5"
         }
     },
     "types": {
