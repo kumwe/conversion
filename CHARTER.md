@@ -91,25 +91,29 @@ from its own provenance. An encoder cannot drop the fields because no object wit
 
 ## Drop-in mechanics
 
-The `MoneyRateProvider` interface and its companion types are pinned extension API v1 in the App's
-classification and its `money-rate-provider-v1` / `unit-conversion-provider-v1` compatibility
-fixtures — published historically under `Kumwe\App\...` names, recorded at the canonical names
-from the adoption change onward. Extraction must not move that surface an inch in behaviour:
+The package-owned public-API manifest pins the `MoneyRateProvider` and `UnitConversionProvider`
+interfaces and their complete fifteen-type transitive closure as `extension-provider-v1`. The App's
+consumer record stores only the canonical package coordinate, profile identifier, profile digest,
+and type count; its gate recomputes that digest from the installed manifest's full type shapes and
+loads every selected type under its canonical name. Extraction must not move that surface an inch
+in behaviour:
 
 - **Canonical namespace here.** Every extracted type lives under `Kumwe\Conversion\` in this
   repository, which is its one canonical home from the first release onward.
 - **Canonical names everywhere.** The canonical `Kumwe\Conversion\` names are the only names. The
-  App's adoption change migrates every reference — imports, FQCN strings, docblocks, its
-  classification and its compatibility-fixture records — to the canonical names, deletes its
-  copies, and retires the historical `Kumwe\App\...` names in that same change. No compatibility
-  layer, no maintenance surface: nothing resolves a retired name, and nothing has to, because no
-  third-party extension was ever published against the historical names. The rename record in
+  App's adoption change migrates every reference — imports, FQCN strings, and docblocks — to the
+  canonical names, deletes its copies and obsolete historical surface records, and records the
+  package profile digest and type count. It retires the historical `Kumwe\App\...` names in that
+  same change. No compatibility layer, no maintenance surface: nothing resolves a retired name,
+  and nothing has to, because no third-party extension was ever published against the historical
+  names. The rename record in
   [`docs/app-agreement.md`](docs/app-agreement.md) is the historical record of what moved where.
-- **Identity proven, not asserted.** The App's full test suite and its architecture boundary tests
-  run green with assertions unchanged against the extracted package before the adoption is
-  claimed. The pinned-surface records — the compatibility fixtures and the classification — are
-  re-recorded at the canonical names once, in the adoption change, as its stated generation
-  action; they are the proof thereafter, under the never-rewritten rule.
+- **Identity proven, not asserted.** The package owns and preserves the extracted unit corpus. The
+  App removes only byte-for-byte duplicate unit coverage and keeps its retained unit, integration,
+  functional, and architecture boundary assertions green without rewriting them before adoption is
+  claimed. The package manifest is the type-shape authority; the App's minimal digest/count record
+  and its independent consumer gate prove that the exact installed release supplies that reviewed
+  profile without aliases or a copied second authority.
 
 The protocol both repositories follow is recorded in [`docs/app-agreement.md`](docs/app-agreement.md).
 
@@ -132,6 +136,7 @@ The protocol both repositories follow is recorded in [`docs/app-agreement.md`](d
 
 Work is recorded in [`docs/roadmap.md`](docs/roadmap.md) while open and in `CHANGELOG.md` when
 delivered; a claim states only what the check lane proves on a clean clone. The check lane is
-`composer check`: lint, documentation completeness, and the dependency-free test suite. Every commit
-passes it. The engineering rules live in
+`composer check`: Composer metadata/autoload, the frozen public API, lint, style, PHPStan max,
+documentation completeness, and the dependency-free behavioural suite. Every commit passes it.
+The engineering rules live in
 [`docs/engineering-standard.md`](docs/engineering-standard.md).

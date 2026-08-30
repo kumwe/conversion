@@ -16,7 +16,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 # Serialized so two pushes cannot race past the tag-existence check; the
 # later run then finds the tag and verifies instead of colliding.
@@ -43,28 +43,64 @@ jobs:
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2.35.5
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, mbstring
           coverage: none
-          tools: none
+          tools: composer:v2
 
-      - name: Lint
-        run: php tools/lint.php
+      - name: Install the validated package toolchain
+        run: |
+          composer validate --strict
+          composer install --no-interaction --prefer-dist
+          composer audit --abandoned=fail
 
-      - name: Verify member documentation
-        run: php tools/check-docblocks.php
+      - name: Run the complete package gate
+        run: composer check
 
-      - name: Run the suite
-        run: php tests/run.php
+      - name: Verify the no-dev installed-package autoloader
+        run: |
+          composer install --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          composer autoload:smoke
+
+      - name: Verify the exported consumer archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          composer archive --format=zip --dir=dist --file=kumwe-conversion
+          archive="$(find dist -maxdepth 1 -type f -name 'kumwe-conversion*.zip' -print -quit)"
+          test -n "$archive"
+          root="$(mktemp -d)"
+          unzip -q "$archive" -d "$root"
+          package="$root"
+          if [ ! -d "$package/src" ]; then
+            mapfile -t packages < <(find "$root" -mindepth 1 -maxdepth 1 -type d -print)
+            test "${#packages[@]}" -eq 1
+            package="${packages[0]}"
+          fi
+          test "$(find "$package" -type f | wc -l)" -eq 29
+          test "$(find "$package/src" -type f -name '*.php' | wc -l)" -eq 23
+          test "$(find "$package/resources" -type f | wc -l)" -eq 2
+          test "$(find "$package" -maxdepth 1 -type f | wc -l)" -eq 4
+          test -f "$package/resources/public-api/v1.json"
+          test -f "$package/resources/toolchain/autoload-smoke.php"
+          for forbidden in .github .phpstan.cache docs tests tools vendor dist CHARTER.md \
+            composer.lock phpcs.xml phpstan.neon; do
+            test ! -e "$package/$forbidden"
+          done
+          composer --working-dir="$package" install \
+            --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          composer --working-dir="$package" autoload:smoke
 
   release:
     name: Release the recorded version
     needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - name: Check out the pushed commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
 
       # The newest release record is the FIRST second-level heading, so a
@@ -91,33 +127,12 @@ jobs:
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      # Only a confirmed 404 means the tag is missing; any other probe
-      # failure stops the run rather than colliding with an existing tag.
-      - name: Create the version tag when it is missing
+      # Probe publication before accepting an existing tag. A release that
+      # already exists is an idempotent verification path; an unpublished
+      # tag must identify this exact commit after its complete check matrix.
+      - name: Check whether the GitHub release exists
         if: steps.record.outputs.version != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.record.outputs.version }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          probe_status=0
-          probe="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v$VERSION" 2>&1)" || probe_status=$?
-          if [ "$probe_status" -eq 0 ]; then
-            echo "Tag v$VERSION already exists; leaving it untouched."
-          elif grep -q 'HTTP 404' <<<"$probe"; then
-            gh api "repos/$GITHUB_REPOSITORY/git/refs" \
-              --field ref="refs/tags/v$VERSION" \
-              --field sha="$GITHUB_SHA"
-            echo "Created tag v$VERSION at $GITHUB_SHA."
-          else
-            echo "$probe"
-            echo "::error::Could not determine whether tag v$VERSION exists."
-            exit 1
-          fi
-
-      - name: Publish the GitHub release when it is missing
-        if: steps.record.outputs.version != ''
+        id: publication
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.record.outputs.version }}
@@ -127,14 +142,74 @@ jobs:
           probe_status=0
           probe="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" 2>&1)" || probe_status=$?
           if [ "$probe_status" -eq 0 ]; then
-            echo "Release v$VERSION already exists; leaving it untouched."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
           elif grep -q 'HTTP 404' <<<"$probe"; then
-            gh release create "v$VERSION" \
-              --verify-tag \
-              --title "v$VERSION" \
-              --notes "Extracted from Kumwe App as a drop-in replacement; the consumer obligations and the rename record live in docs/app-agreement.md. Changelog: CHANGELOG.md section $VERSION."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
           else
             echo "$probe"
             echo "::error::Could not determine whether release v$VERSION exists."
             exit 1
           fi
+
+      # Only a confirmed 404 means the tag is missing; any other probe
+      # failure stops the run rather than colliding with an existing tag.
+      - name: Create the version tag when it is missing
+        if: steps.record.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_EXISTS: ${{ steps.publication.outputs.exists }}
+          VERSION: ${{ steps.record.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          probe_status=0
+          probe="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v$VERSION" 2>&1)" || probe_status=$?
+          if [ "$probe_status" -eq 0 ]; then
+            tag_type="$(jq -r '.object.type' <<<"$probe")"
+            tag_sha="$(jq -r '.object.sha' <<<"$probe")"
+            if [ "$tag_type" != commit ]; then
+              echo "::error::Tag v$VERSION points to $tag_type $tag_sha instead of a release commit."
+              exit 1
+            fi
+            if ! git merge-base --is-ancestor "$tag_sha" "$GITHUB_SHA"; then
+              echo "::error::Tag v$VERSION points outside the pushed main history: $tag_sha."
+              exit 1
+            fi
+            tagged_heading="$(git show "$tag_sha:CHANGELOG.md" | grep -m 1 -E '^## ')"
+            tagged_version="$(sed -nE 's/^## \[?([0-9]+\.[0-9]+\.[0-9]+)\]?( .*)?$/\1/p' <<<"$tagged_heading")"
+            if [ "$tagged_version" != "$VERSION" ]; then
+              echo "::error::Tag v$VERSION targets a commit whose newest release record is $tagged_version."
+              exit 1
+            fi
+            if [ "$RELEASE_EXISTS" != true ] && [ "$tag_sha" != "$GITHUB_SHA" ]; then
+              echo "::error::Unpublished tag v$VERSION points to $tag_sha, not this fully tested commit $GITHUB_SHA."
+              exit 1
+            fi
+            echo "Verified tag v$VERSION at release commit $tag_sha."
+          elif grep -q 'HTTP 404' <<<"$probe"; then
+            if [ "$RELEASE_EXISTS" = true ]; then
+              echo "::error::Release v$VERSION exists without its version tag."
+              exit 1
+            fi
+            gh api "repos/$GITHUB_REPOSITORY/git/refs" \
+              --field ref="refs/tags/v$VERSION" \
+              --field sha="$GITHUB_SHA"
+            echo "Created tag v$VERSION at release commit $GITHUB_SHA."
+          else
+            echo "$probe"
+            echo "::error::Could not determine whether tag v$VERSION exists."
+            exit 1
+          fi
+
+      - name: Publish the GitHub release when it is missing
+        if: steps.record.outputs.version != '' && steps.publication.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.record.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "v$VERSION" \
+            --verify-tag \
+            --title "v$VERSION" \
+            --notes "Canonical exact money and quantity conversion contracts. Changelog: CHANGELOG.md section $VERSION."

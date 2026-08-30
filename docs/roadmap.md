@@ -82,23 +82,28 @@ Two seams need care, recorded here so no phase discovers them mid-flight:
 ### C-4 — The App consumes the package
 
 The App requires `kumwe/conversion` at an exact pin from Packagist, deletes its twenty-three
-extracted files, and migrates every reference — imports, FQCN strings, docblocks, its
-classification and its compatibility-fixture records — to the canonical `Kumwe\Conversion\` names,
-the eight pinned extension-API names first among them. The historical `Kumwe\App\...` names are
-retired in that same change; no compatibility layer and no maintenance surface replace them,
-because no third-party extension was ever published against the historical names. The rename
-record is normative in [`app-agreement.md`](app-agreement.md).
+extracted files, and migrates every reference — imports, FQCN strings, and docblocks — to the
+canonical `Kumwe\Conversion\` names, the fifteen types in the package-owned
+`extension-provider-v1` profile first among them. It removes obsolete historical surface records
+and adds one minimal consumer record containing the package coordinate, profile identifier, digest,
+and type count. The historical `Kumwe\App\...` names are retired in that same change; no
+compatibility layer and no maintenance surface replace them, because no third-party extension was
+ever published against the historical names. The rename record is normative in
+[`app-agreement.md`](app-agreement.md).
 
-**Proof.** The App's full existing suite green with assertions unchanged: unit, integration,
-functional, and the architecture boundary tests (`MoneyConversionBoundaryTest`,
-`UnitConversionBoundaryTest`, `ConvertedMoneySurfaceCoverageTest`). The compatibility fixtures
-`tests/Fixtures/ExtensionApi/money-rate-provider-v1.json` and
-`tests/Fixtures/ExtensionApi/unit-conversion-provider-v1.json` and the classification re-recorded
-at the canonical names exactly once, as the change's stated generation action — the
-never-rewritten rule applies to the canonical-name records from then on. `composer
-extension:contract` green against the re-recorded fixtures; the App's baseline re-recorded only
-for the file-inventory moves its own process requires. Behavioural identity, not equivalence: any
-App assertion that needs editing to pass is a defect in the adoption, not in the test.
+**Proof.** The package-owned behavioural corpus remains green without rewritten assertions. The App
+deletes only the unit tests that are byte-for-byte duplicates of that package corpus, while its
+retained unit, integration, functional, and architecture boundary tests
+(`MoneyConversionBoundaryTest`, `UnitConversionBoundaryTest`,
+`ConvertedMoneySurfaceCoverageTest`) remain green without changing their behavioural assertions.
+The App's `conversion-api-profile.json` contains only the package coordinate, profile identifier,
+reviewed digest, and type count. `composer conversion:api` independently rebuilds that digest from
+the installed package manifest's full type shapes, verifies the ordered fifteen-type closure, and
+autoloads every member under its canonical name without aliases. The exact-dependency gate binds
+the release to its official forty-character Composer lock reference. The App's baseline is
+re-recorded only for the file-inventory moves its own process requires. Behavioural identity, not
+equivalence: any retained App assertion that needs editing to pass is a defect in the adoption, not
+in the test.
 
 **Non-goals.** No behaviour change rides along, however small. Retiring every historical reference
 is in scope, not later housekeeping: no internal caller keeps an old import, and no

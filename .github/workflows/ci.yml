@@ -27,15 +27,55 @@ jobs:
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2.35.5
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, mbstring
           coverage: none
-          tools: none
+          tools: composer:v2
 
-      - name: Lint
-        run: php tools/lint.php
+      - name: Cache Composer package downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/composer/files
+          key: composer-files-${{ hashFiles('composer.json') }}
+          restore-keys: composer-files-
 
-      - name: Verify member documentation
-        run: php tools/check-docblocks.php
+      - name: Install the validated package toolchain
+        run: |
+          composer validate --strict
+          composer install --no-interaction --prefer-dist
+          composer audit --abandoned=fail
 
-      - name: Run the suite
-        run: php tests/run.php
+      - name: Run the complete package gate
+        run: composer check
+
+      - name: Verify the no-dev installed-package autoloader
+        run: |
+          composer install --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          composer autoload:smoke
+
+      - name: Verify the exported consumer archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          composer archive --format=zip --dir=dist --file=kumwe-conversion
+          archive="$(find dist -maxdepth 1 -type f -name 'kumwe-conversion*.zip' -print -quit)"
+          test -n "$archive"
+          root="$(mktemp -d)"
+          unzip -q "$archive" -d "$root"
+          package="$root"
+          if [ ! -d "$package/src" ]; then
+            mapfile -t packages < <(find "$root" -mindepth 1 -maxdepth 1 -type d -print)
+            test "${#packages[@]}" -eq 1
+            package="${packages[0]}"
+          fi
+          test "$(find "$package" -type f | wc -l)" -eq 29
+          test "$(find "$package/src" -type f -name '*.php' | wc -l)" -eq 23
+          test "$(find "$package/resources" -type f | wc -l)" -eq 2
+          test "$(find "$package" -maxdepth 1 -type f | wc -l)" -eq 4
+          test -f "$package/resources/public-api/v1.json"
+          test -f "$package/resources/toolchain/autoload-smoke.php"
+          for forbidden in .github .phpstan.cache docs tests tools vendor dist CHARTER.md \
+            composer.lock phpcs.xml phpstan.neon; do
+            test ! -e "$package/$forbidden"
+          done
+          composer --working-dir="$package" install \
+            --no-interaction --prefer-dist --no-dev --classmap-authoritative
+          composer --working-dir="$package" autoload:smoke

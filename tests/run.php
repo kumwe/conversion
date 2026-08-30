@@ -5,8 +5,9 @@
  * public method beginning with "test", and reports one line per file.
  *
  * Assertions come from Kumwe\Conversion\Tests\TestCase. No framework, so the
- * suite runs on any supported PHP with no composer install. An empty case
- * directory is a passing state, which is what the founding commit ships.
+ * suite runs on any supported PHP with no composer install. Discovery fails
+ * closed: deleting the suite, or leaving a discovered case with no test
+ * methods, is a build failure rather than an empty success.
  *
  * @since 0.1.0
  */
@@ -32,6 +33,11 @@ spl_autoload_register(static function (string $class): void {
 $caseDirectory = __DIR__ . '/Case';
 $files = glob($caseDirectory . '/*Test.php') ?: [];
 sort($files);
+
+if ($files === []) {
+    fwrite(STDERR, "Conversion suite failed: no test case files were discovered.\n");
+    exit(1);
+}
 
 $totalTests = 0;
 $totalAssertions = 0;
@@ -64,8 +70,15 @@ foreach ($files as $file) {
             );
         }
     }
+    if ($ran === 0) {
+        $failures[] = "{$class} declares no public test methods.";
+    }
     $totalAssertions += $case->assertionCount();
     echo sprintf("%-52s %3d tests\n", basename($file), $ran);
+}
+
+if ($totalTests === 0) {
+    $failures[] = 'No tests ran.';
 }
 
 if ($failures !== []) {

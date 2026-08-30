@@ -21,17 +21,19 @@ extension API, and the promises below are what keep "drop-in" true release after
    requires an exact release, never a range. A contract change reaches the App only as a
    deliberate re-pin with its own review and evidence — the same discipline the App applies to its
    Studio pin.
-2. **The pinned fixtures are the authority.** The App's compatibility fixtures —
-   `tests/Fixtures/ExtensionApi/money-rate-provider-v1.json` and
-   `tests/Fixtures/ExtensionApi/unit-conversion-provider-v1.json` — pin the extension-facing
-   surface by FQCN and signature. They are re-recorded at the canonical `Kumwe\Conversion\` names
-   exactly once, in the adoption change, as its stated generation action; from then on they are
-   never rewritten. A release of this package that would require editing either fixture is not
-   adoptable at the current generation: an incompatible surface is a successor generation on the
-   App side, with a new fixture beside the old one.
-3. **Identity is proven on every re-pin.** The App's full suite, unchanged, is the acceptance test
-   for a new pin. A pin that needs an App test edited is refused, and the difference is a finding
-   in this repository.
+2. **The package manifest is the authority.** This package's `resources/public-api/v1.json` owns
+   every canonical public type shape and the `extension-provider-v1` profile. The App copies none
+   of those shapes: its consumer record stores only `kumwe/conversion`, the profile identifier, the
+   reviewed digest, and the type count. On every build its consumer gate recomputes the digest from
+   the installed manifest, verifies the complete ordered closure, and loads every selected type
+   without an alias. A release whose profile does not match that record is not adoptable; an
+   incompatible provider-facing surface requires a deliberately reviewed successor profile and App
+   consumer record.
+3. **Identity is proven on every re-pin.** The package-owned extraction corpus and public-API
+   manifest are the first acceptance test. The App may delete only tests that duplicate that corpus;
+   its retained unit, integration, functional, and architecture assertions remain unchanged. A pin
+   that needs a retained App assertion edited is refused, and the difference is a finding in this
+   repository.
 4. **Version policy.** Patch: behaviour-identical fixes. Minor: additive surface the App may adopt
    without touching the pinned generation. Major: anything a consumer must act on. This package
    versions independently; alignment travels through the pin, never through matching numbers.
@@ -39,15 +41,13 @@ extension API, and the promises below are what keep "drop-in" true release after
 ## The rename record
 
 The canonical `Kumwe\Conversion\` names are **the only names**. The App's adoption change migrates
-every reference — imports, FQCN strings, docblocks, its classification and its
-compatibility-fixture records — to the canonical names, deletes its copies, and retires the
-historical `Kumwe\App\...` names in that same change: the pinned fixture records are re-recorded
-at the canonical names as a one-time, deliberate generation action — legitimate because no
-third-party extension was ever published against the historical names — and from then on the
-never-rewritten rule applies to the canonical-name records. No compatibility layer, no maintenance
-surface: nothing resolves a retired name. The table below remains as the historical record of what
-moved where; each canonical name is under `Kumwe\Conversion\`, each retired name was under
-`Kumwe\App\`.
+every reference — imports, FQCN strings, and docblocks — to the canonical names, deletes its copies
+and obsolete historical surface records, and records the package profile digest and type count. It
+retires the historical `Kumwe\App\...` names in that same change. This one-time contract reset is
+legitimate because no third-party extension was ever published against the historical names. No
+compatibility layer, no maintenance surface: nothing resolves a retired name. The table below
+remains as the historical record of what moved where; each canonical name is under
+`Kumwe\Conversion\`, each retired name was under `Kumwe\App\`.
 
 | Canonical name (here) | Retired name (removed from the App) |
 | --- | --- |
@@ -75,14 +75,15 @@ moved where; each canonical name is under `Kumwe\Conversion\`, each retired name
 | `Provider\MoneyConversionPipeline` | `BusinessRecord\Application\MoneyConversionPipeline` |
 | `Provider\UnitConversionPipeline` | `BusinessRecord\Application\UnitConversionPipeline` |
 
-Eight of these are pinned extension API v1 in the App's classification — `MoneyRateProvider` and
-`UnitConversionProvider` (the ports extensions implement), `MoneyConversionRequest` and
-`UnitConversionRequest` (received), `MoneyExchangeRate` and `UnitConversionFactor` (constructed),
-and the two rounding-mode enums whose case sets the fixtures enumerate. Extensions implement the
-canonical `Kumwe\Conversion\Provider\...` ports directly, and the App's compatibility fixtures
-record the canonical FQCNs from the adoption generation onward. The remaining fifteen are retired
-with the same finality: every App reference migrates in the adoption change, and no published
-third-party consumer of the historical names exists to break.
+The package's `resources/public-api/v1.json` owns the extension-facing
+`extension-provider-v1` profile. Its two roots are `MoneyRateProvider` and
+`UnitConversionProvider`; its fifteen-type closure also includes the request and evidence classes,
+both rounding modes and their shared rule, exact-decimal construction, the money and quantity values,
+and the two typed refusals. The App pins the profile digest and reads this package evidence rather
+than copying those class shapes into a second authority. The App's consumer record identifies the
+canonical package and profile, its reviewed digest, and the fifteen-type count. The remaining eight
+package types are not extension-provider surface, but every historical App name is retired with the
+same finality: no published third-party consumer exists to break.
 
 Unmoved — App authority: `MoneyRateProviderRegistrar`, `UnitConversionProviderRegistrar`,
 `UnitConversionProviderDefinition`, and `MoneyRateProviderDefinition` (SPI — note that the last
