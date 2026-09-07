@@ -9,6 +9,19 @@ case "${1:-}" in
       exit 1
     fi
     ;;
+  protected-branch)
+    if [[ "$#" -ne 2 || "$2" != refs/heads/main ]]; then
+      echo 'Release refused: only refs/heads/main may publish a recorded version.' >&2
+      exit 1
+    fi
+    if ! jq -es '
+      length == 1 and (.[0] | type == "object" and .name == "main" and .protected == true)
+    ' >/dev/null; then
+      echo 'Release refused: GitHub must report main as protected by an active branch rule or ruleset.' >&2
+      echo 'Enable the main ruleset in Settings > Rules > Rulesets; see docs/releasing.md.' >&2
+      exit 1
+    fi
+    ;;
   published)
     if [[ "$#" -ne 2 || ! "$2" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
       echo 'Release verification requires one exact stable SemVer version.' >&2
@@ -23,7 +36,7 @@ case "${1:-}" in
     fi
     ;;
   *)
-    echo 'Usage: check-release-integrity.sh protected true | published VERSION < release.json' >&2
+    echo 'Usage: check-release-integrity.sh protected true | protected-branch REF < branch.json | published VERSION < release.json' >&2
     exit 2
     ;;
 esac

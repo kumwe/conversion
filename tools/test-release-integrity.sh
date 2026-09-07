@@ -24,6 +24,26 @@ done
 refuse protected
 refuse protected true extra
 refuse unknown
+
+branch='{"name":"main","protected":true}'
+accept protected-branch refs/heads/main <<< "$branch"
+refuse protected-branch <<< "$branch"
+refuse protected-branch refs/heads/main extra <<< "$branch"
+for ref in '' main refs/tags/main refs/heads/feature; do
+  refuse protected-branch "$ref" <<< "$branch"
+done
+refuse protected-branch refs/heads/feature <<< '{"name":"feature","protected":true}'
+for change in '.protected = false' '.protected = "true"' '.protected = null' \
+  'del(.protected)' '.name = "feature"' '.name = null' 'del(.name)'; do
+  refuse protected-branch refs/heads/main <<< "$(jq -c "$change" <<< "$branch")"
+done
+for malformed in '' '{}' '[]' 'null' 'true' 'not-json'; do
+  refuse protected-branch refs/heads/main <<< "$malformed"
+done
+refuse protected-branch refs/heads/main <<< "$branch $branch"
+refuse protected-branch refs/heads/main <<< "{} $branch"
+refuse protected-branch refs/heads/main <<< "$branch {}"
+
 payload='{"tag_name":"v0.1.1","draft":false,"prerelease":false,"immutable":true,
 "published_at":"2026-09-07T00:00:00Z"}'
 accept published 0.1.1 <<< "$payload"
