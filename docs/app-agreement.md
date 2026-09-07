@@ -9,9 +9,11 @@ extension API, and the promises below are what keep "drop-in" true release after
 
 - **This package** owns the canonical classes: the exact decimal kernel, the value types, the
   conversion contract, the pipelines, and the provider ports, under `Kumwe\Conversion\`.
-- **The App** owns adoption: the exact version pin, the extension SPI (registrars, definition
-  types, admission bounds), the runtime catalogs, storage of exact values, and every surface that
+- **The App** owns adoption: the exact version pin, trusted activation and admission,
+  runtime catalogue adapters, storage of exact values, and every surface that
   renders a converted figure with its provenance.
+- **Conversion Extension** owns portable provider definitions; **Extension SDK** owns their
+  signed manifest declarations and executable bindings. The old registrar interfaces are withdrawn.
 - **Extensions** own rates and conversion tables, behind the ports defined here, contributed
   through the App's SPI.
 
@@ -85,11 +87,13 @@ canonical package and profile, its reviewed digest, and the fifteen-type count. 
 package types are not extension-provider surface, but every historical App name is retired with the
 same finality: no published third-party consumer exists to break.
 
-Unmoved — App authority: `MoneyRateProviderRegistrar`, `UnitConversionProviderRegistrar`,
-`UnitConversionProviderDefinition`, and `MoneyRateProviderDefinition` (SPI — note that the last
-lives in `BusinessRecord\Domain` yet implements the App's `ContributionDefinition`), and the
-runtime catalog implementations under `BusinessRecord\Infrastructure`. They do not move and they
-do not rename.
+The later extraction assigns `UnitConversionProviderDefinition` and `MoneyRateProviderDefinition`
+to `kumwe/conversion-extension` under `Kumwe\Conversion\Contribution`. SDK signed
+`contributions.integration.rate_providers` and `unit_converters` declarations, together with
+`ExtensionBindingRegistrar::moneyRateProvider()` and `unitConversionProvider()`, supersede the old
+registrar interfaces. Runtime catalogue adapters under `BusinessRecord\Infrastructure` remain
+App-owned. The original extraction inventory must not be read as a permanent App ownership rule
+for those portable definitions.
 
 ## Rates never enter this package
 
