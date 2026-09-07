@@ -1,13 +1,16 @@
 <?php
 
 /** Refuse host/storage dependencies and reversed exact-decimal layering. @since 0.1.3 */
+
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
 $errors = [];
 $allowed = ['Decimal' => ['Decimal'], 'Value' => ['Decimal', 'Value'],
     'Contract' => ['Decimal', 'Value', 'Contract'], 'Provider' => ['Decimal', 'Value', 'Contract', 'Provider']];
-$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root . '/src', FilesystemIterator::SKIP_DOTS));
+$iterator = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator($root . '/src', FilesystemIterator::SKIP_DOTS),
+);
 foreach ($iterator as $file) {
     if (!$file->isFile() || $file->getExtension() !== 'php') {
         continue;
@@ -34,10 +37,12 @@ foreach ($iterator as $file) {
                 $errors[] = $relative . ' imports a foreign dependency: ' . $name;
             }
         }
-        if ($token[0] === T_STRING && in_array(strtolower($token[1]), [
+        if (
+            $token[0] === T_STRING && in_array(strtolower($token[1]), [
             'pdo', 'mysqli', 'curl_exec', 'file_get_contents', 'file_put_contents', 'fopen', 'exec',
             'shell_exec', 'proc_open', 'getenv', 'class_alias',
-        ], true)) {
+            ], true)
+        ) {
             $errors[] = $relative . ' introduces host I/O or alias authority: ' . $token[1];
         }
     }
