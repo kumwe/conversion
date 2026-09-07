@@ -5,6 +5,9 @@ passes on a clean clone.
 
 ## 0.1.3 — 2026-09-07
 
+- Unify PR and post-rebase release gates, dynamic release identity, tested publication retries,
+  and administrator setup across the package family. Preserve immutable release and dependency evidence requirements.
+
 - Own the reusable 108-vector exact decimal conformance corpus and enforce package test evidence for the full public surface.
 - Require protected main and immutable stable publication, with tested release-heading and integrity refusals.
 - App composition, authorization, persistence, lifecycle and delivery tests remain host-owned.
