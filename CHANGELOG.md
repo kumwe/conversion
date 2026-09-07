@@ -6,6 +6,7 @@ passes on a clean clone.
 ## 0.1.3 — 2026-09-07
 
 - Own the reusable 108-vector exact decimal conformance corpus and enforce package test evidence for the full public surface.
+- Require protected main and immutable stable publication, with tested release-heading and integrity refusals.
 - App composition, authorization, persistence, lifecycle and delivery tests remain host-owned.
 
 ## 0.1.2 - 2026-08-29

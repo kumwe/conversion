@@ -25,3 +25,9 @@ Version policy:
 - **Major** — a change a consumer must act on; the App agreement's rename record and pinned
   behaviour make any observable difference a major by definition.
 - While the extraction is settling, the library stays `0.x` and the App pins exactly.
+
+## Release integrity prerequisites
+
+Before merging the recorded patch release, a maintainer must protect `main` and enable immutable releases in the repository or applicable organization policy. The release job refuses an unprotected ref before tag/publication mutations and requires the exact stable version to be published with `immutable: true`. A pre-existing mutable release fails verification. Changing settings now does not make past mutable releases independently verified.
+
+The shared release-heading parser is tested against malformed records and is used for both the pushed changelog and an existing tag. Source/tag checks, all package tests, true archive checks and dependency audit remain required. A fresh independent release verifier and exact artifact evidence are still required before dependent publication or App adoption. Agents open reviewable PRs; maintainers merge and publication follows the recorded version.
