@@ -1,0 +1,285 @@
+{
+  "schema": "kumwe-test-ownership/v1",
+  "package": "kumwe/conversion",
+  "api_manifest": "resources/public-api/v1.json",
+  "suite": {
+    "inventory_command": [
+      "php",
+      "tests/run.php",
+      "--list-json"
+    ]
+  },
+  "exports": {
+    "Kumwe\\Conversion\\Contract\\MoneyConversionRequest": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionRequestTest::testARateAnswersOnlyWhenItPricesThePairAsAtTheInstantOrEarlier",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionRequestTest::testARequestAsAtInstantMustBeExpressedInUtc"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionRequestTest::testAConversionRequestRefusesADenominationItWouldNotChange"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Contract\\MoneyConverter": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConverterTest::testConversionMultipliesExactlyAndKeepsTheUnroundedProduct",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConverterTest::testTheConvertedResultCarriesItsWholeProvenance"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConverterTest::testARateFromAfterTheInstantAskedAboutIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConverterTest::testARatePricingAnotherPairIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Contract\\QuantityConverter": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityConverterTest::testConversionMultipliesExactlyAndKeepsTheUnroundedProduct",
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityConverterTest::testTheConvertedResultCarriesItsWholeProvenance"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityConverterTest::testAFactorFromAfterTheInstantAskedAboutIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityConverterTest::testAFactorRelatingAnotherPairIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Contract\\UnitConversionRequest": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionRequestTest::testAFactorAnswersOnlyWhenItRelatesThePairAsAtTheInstantOrEarlier",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionRequestTest::testARequestAsAtInstantMustBeExpressedInUtc"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionRequestTest::testAConversionRequestRefusesAUnitItWouldNotChange"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Decimal\\ExactDecimal": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalTest::testAShorterFractionIsPaddedAndNegativeZeroIsSpelledAsZero",
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalTest::testDecimalWithEqualPrecisionAndScaleAcceptsZeroAndMaximumFraction"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalTest::testAFractionWiderThanTheFieldScaleIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalTest::testANonCanonicalLiteralIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Decimal\\ExactDecimalArithmetic": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testALiteralRestoresAtItsOwnMinimalPrecisionAndScale",
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testEveryRoundingRuleDecidesTheDiscardedDigitsAtTheBoundary"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testANonCanonicalOrOverwideLiteralIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testAProductWiderThanThePortableRangeIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Decimal\\ExactRoundingRule": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testALiteralRestoresAtItsOwnMinimalPrecisionAndScale",
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testEveryRoundingRuleDecidesTheDiscardedDigitsAtTheBoundary"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testANonCanonicalOrOverwideLiteralIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ExactDecimalArithmeticTest::testAProductWiderThanThePortableRangeIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\MoneyConversionPipeline": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForARate",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testTheFirstAnsweringProviderInDeclaredOrderWins"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatAcceptsAndThenCannotSourceARatePropagatesItsRefusal"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\MoneyRateProvider": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForARate",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testTheFirstAnsweringProviderInDeclaredOrderWins"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatAcceptsAndThenCannotSourceARatePropagatesItsRefusal"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\MoneyRateProviderCatalog": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForARate",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testTheFirstAnsweringProviderInDeclaredOrderWins"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatAcceptsAndThenCannotSourceARatePropagatesItsRefusal"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\MoneyRateUnavailable": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForARate",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testTheFirstAnsweringProviderInDeclaredOrderWins"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyConversionPipelineTest::testAProviderThatAcceptsAndThenCannotSourceARatePropagatesItsRefusal"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\UnitConversionPipeline": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForAFactor",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testTheOnlyAnswerThePipelineCanGiveCarriesItsWholeProvenance"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAFactorAttributedToAnotherProviderIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\UnitConversionProvider": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForAFactor",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testTheOnlyAnswerThePipelineCanGiveCarriesItsWholeProvenance"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAFactorAttributedToAnotherProviderIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\UnitConversionProviderCatalog": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForAFactor",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testTheOnlyAnswerThePipelineCanGiveCarriesItsWholeProvenance"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAFactorAttributedToAnotherProviderIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Provider\\UnitConversionUnavailable": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAProviderThatDeclinesIsPassedOverWithoutBeingAskedForAFactor",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testTheOnlyAnswerThePipelineCanGiveCarriesItsWholeProvenance"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAConversionEveryProviderDeclinesIsRefusedRatherThanInvented",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionPipelineTest::testAFactorAttributedToAnotherProviderIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\ConvertedMoneyValue": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedMoneyValueTest::testAConvertedAmountCarriesItsExactAndUnroundedArithmetic",
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedMoneyValueTest::testAConvertedAmountIsRecognisedInEitherFormAndNotMistakenForOtherData"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedMoneyValueTest::testAnExportMemberOfTheWrongTypeIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedMoneyValueTest::testAnExportThatClaimsToBeConvertedAndCannotProveItIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\ConvertedQuantityValue": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedQuantityValueTest::testAConvertedQuantityCarriesItsExactAndUnroundedArithmetic",
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedQuantityValueTest::testAConvertedQuantityIsStructurallyUnlikeAStoredOne"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedQuantityValueTest::testAnExportMemberOfTheWrongTypeIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedQuantityValueTest::testAnUnknownRoundingModeIsRefusedInBothForms"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\MoneyExchangeRate": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyExchangeRateTest::testARateBindsItsPairInstantAndProviderAndExportsThemExactly",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyExchangeRateTest::testARateMustBeAnExactValueAboveZeroWithAFraction"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyExchangeRateTest::testACurrencyThatIsNotAnUppercaseIsoCodeIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyExchangeRateTest::testAProviderThatIsNotANamespacedIdentifierIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\MoneyRoundingMode": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyRoundingModeTest::testEveryDeclaredRoundingModeProducesItsOwnAnswer",
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyRoundingModeTest::testTheDeclaredVocabularyIsExactlyThePublishedCaseSet"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedMoneyValueTest::testAnExportMemberOfTheWrongTypeIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedMoneyValueTest::testAnExportThatClaimsToBeConvertedAndCannotProveItIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\MoneyValue": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyValueTest::testAnAmountBindsToItsCurrencyAndExportsTheCanonicalPair"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\MoneyValueTest::testACurrencyThatIsNotAnUppercaseIsoCodeIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\QuantityRoundingMode": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityRoundingModeTest::testEveryDeclaredRoundingModeProducesItsOwnAnswer",
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityRoundingModeTest::testTheDeclaredVocabularyIsExactlyThePublishedCaseSet"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedQuantityValueTest::testAnExportMemberOfTheWrongTypeIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\ConvertedQuantityValueTest::testAnUnknownRoundingModeIsRefusedInBothForms"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\QuantityValue": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityValueTest::testAnAmountBindsToItsUnitAndExportsTheCanonicalPair",
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityValueTest::testTheFullPortableIdentifierGrammarIsAdmitted"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\QuantityValueTest::testAUnitThatIsNotABoundedPortableIdentifierIsRefused"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    },
+    "Kumwe\\Conversion\\Value\\UnitConversionFactor": {
+      "behavior": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionFactorTest::testAFactorBindsItsUnitsInstantAndProviderAndExportsThemExactly",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionFactorTest::testAFactorExportMustCarryExactlyItsDeclaredMembers"
+      ],
+      "boundary": [
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionFactorTest::testAFactorExportMemberOfTheWrongTypeIsRefused",
+        "Kumwe\\Conversion\\Tests\\Case\\UnitConversionFactorTest::testAFactorMustRelateTwoDifferentBoundedUnits"
+      ],
+      "note": "Package-owned behavior and refusal cases; these references identify evidence, not percentage coverage."
+    }
+  },
+  "conformance": {
+    "status": "owned",
+    "rationale": "Exact decimal profile including all six money/quantity rounding modes is replayed independently of App.",
+    "tests": [
+      "Kumwe\\Conversion\\Tests\\Case\\DecimalConformanceTest::testEveryPublishedDecimalVectorHasTheExactAnswerOrRefusal"
+    ],
+    "corpora": [
+      "resources/conformance/decimal-v1.tsv"
+    ]
+  },
+  "architecture": [
+    "tools/verify-architecture.php"
+  ],
+  "host": {
+    "repository": "kumwe/app",
+    "baseline": "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e",
+    "transfers": [],
+    "retained_responsibilities": [
+      "Provider admission and lifecycle; entitlement and provider order.",
+      "Persistence codecs and database round trips.",
+      "Provenance on App rendering, reporting and export surfaces."
+    ]
+  }
+}

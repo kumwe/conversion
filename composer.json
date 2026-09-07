@@ -42,12 +42,16 @@
       "@composer:validate",
       "@lint",
       "@docs",
+      "@architecture",
       "@api",
       "@autoload:smoke",
       "@cs",
       "@analyse",
+      "@test:ownership",
       "@test"
-    ]
+    ],
+    "test:ownership": "php tools/verify-test-ownership.php --self-test",
+    "architecture": "php tools/verify-architecture.php"
   },
   "config": {
     "sort-packages": true
