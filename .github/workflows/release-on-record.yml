@@ -75,9 +75,9 @@ jobs:
             test "${#packages[@]}" -eq 1
             package="${packages[0]}"
           fi
-          test "$(find "$package" -type f | wc -l)" -eq 29
+          test "$(find "$package" -type f | wc -l)" -eq 30
           test "$(find "$package/src" -type f -name '*.php' | wc -l)" -eq 23
-          test "$(find "$package/resources" -type f | wc -l)" -eq 2
+          test "$(find "$package/resources" -type f | wc -l)" -eq 3
           test "$(find "$package" -maxdepth 1 -type f | wc -l)" -eq 4
           test -f "$package/resources/public-api/v1.json"
           test -f "$package/resources/toolchain/autoload-smoke.php"

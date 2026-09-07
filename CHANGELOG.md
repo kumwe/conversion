@@ -3,6 +3,11 @@
 Delivered package changes, newest first. A change is recorded here only after its stated proof
 passes on a clean clone.
 
+## 0.1.3 — 2026-09-07
+
+- Own the reusable 108-vector exact decimal conformance corpus and enforce package test evidence for the full public surface.
+- App composition, authorization, persistence, lifecycle and delivery tests remain host-owned.
+
 ## 0.1.2 - 2026-08-29
 
 - **The published API is now executable evidence.** A deterministic package-owned manifest freezes
