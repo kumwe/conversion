@@ -33,7 +33,7 @@
     "repository": "https://github.com/kumwe/conversion",
     "artifact_identity": "kumwe/conversion",
     "canonical_namespace_or_abi": "Kumwe\\Conversion\\",
-    "branch": "codex/v2-release-handoff-20260908",
+    "branch": "fix/governed-capability-schema",
     "pull_request": "https://github.com/kumwe/conversion/pull/11"
   },
   "ownership": {
@@ -52,7 +52,7 @@
     "public_manifests": [
       {
         "path": "resources/public-api/v1.json",
-        "sha256": "9e90d5057e24441ab82c88b979a9b0a5a2fccb16e1d28410d8402ee0269af716"
+        "sha256": "e2e3c0e3fb5127d38b382cb4779ff7d0343ab0ee0c3ea48264472e75b30298e3"
       },
       {
         "path": "resources/public-api/legacy-v1.json",
@@ -60,11 +60,11 @@
       },
       {
         "path": "resources/capabilities/v1.json",
-        "sha256": "dcf2a3522936c181f54f5b00bdd11feee07f8f6386789361edb2d995c0b932d3"
+        "sha256": "fd7946e41e724ee071dc619105cd06ac6c29f90e159e40b5ad5267d3d6c4237b"
       },
       {
         "path": "resources/service-map/v1.json",
-        "sha256": "6c0a9fbf45da4a7667fd82fbee4717d555c617ba448687c85ba32a7b4c4c8131"
+        "sha256": "bc9a36835e305643cc24af4e698551726750425c1869fc525411f561c73fc4d7"
       },
       {
         "path": "resources/conformance/decimal-v1.tsv",
@@ -600,7 +600,8 @@
     "moved_or_added": [
       "Existing tests/Case/*.php and tests/ownership.json remain the portable behavior owner.",
       "tools/verify-v2-metadata.php rejects canonical/legacy manifest and handoff drift; tools/verify-archive.php rejects missing, extra or changed exported bytes.",
-      "tools/render-public-api-docs.php rejects incomplete source/API documentation."
+      "tools/render-public-api-docs.php rejects incomplete source/API documentation.",
+      "tools/schema-validator/verify.cjs validates all canonical manifests and the full handoff, and rejects malformed/nullability/incomplete-contract fixtures."
     ],
     "remain_in_app_or_consumer": [
       "Money Conversion, Unit Conversion and Converted Money Surface architecture tests",
@@ -625,10 +626,10 @@
     "examples": [
       "examples/direct-construction.php"
     ],
-    "changelog_record": "CHANGELOG.md 0.1.4"
+    "changelog_record": "CHANGELOG.md 0.1.5"
   },
   "release_expectations": {
-    "version_policy": "Exact pre-1.0 pins; 0.1.4 preserves runtime/API/corpus and adds v2 governance evidence.",
+    "version_policy": "Exact pre-1.0 pins; 0.1.5 corrects canonical schema metadata and enforces complete authoritative schemas without changing runtime/API/corpus.",
     "expected_artifact_types": [
       "GitHub source ZIP",
       "Composer archive"
@@ -646,11 +647,11 @@
   "next_task": {
     "phase_name": "Independent release verification and compatible package dependency train",
     "permitted_only_when": [
-      "0.1.4 is actually published and exact source/tag/archive/registry identities pass independent verification.",
+      "0.1.5 is actually published and exact source/tag/archive/registry identities pass independent verification.",
       "The external RELEASE-ATTESTATION.yaml accompanies this released handoff."
     ],
     "consumer_repository": "https://github.com/kumwe/extension-sdk",
-    "dependency_or_native_change": "Reconcile the complete compatible PHP package graph to exact Conversion 0.1.4 only after release verification; do not modify App in this train.",
+    "dependency_or_native_change": "Reconcile the complete compatible PHP package graph to exact Conversion 0.1.5 only after release verification; do not modify App in this train.",
     "namespace_or_api_replacements": [
       "None in this release; the existing canonical 23-type namespace is unchanged."
     ],
@@ -735,7 +736,7 @@ The existing package suite owns decimal/value/converter/provider behavior, refus
 
 ## Next-task execution notes
 
-First verify the actual published 0.1.4 source/tag/archive/Packagist tuple, handoff/manifest/corpus digests, security and no-dev archive consumer. Store external evidence outside this package. Then release the compatible dependent package graph. Later App adoption refreshes its source baseline, exact-repins through Composer, and removes only proven duplicate unit tests; native cutover remains Computation-owned.
+First verify the actual published 0.1.5 source/tag/archive/Packagist tuple, handoff/manifest/corpus digests, security and no-dev archive consumer. Store external evidence outside this package. Then release the compatible dependent package graph. Later App adoption refreshes its source baseline, exact-repins through Composer, and removes only proven duplicate unit tests; native cutover remains Computation-owned.
 
 ## Concurrency and conflict record
 
@@ -744,3 +745,5 @@ Coordinate Composer pins and release metadata across current package PRs. Preser
 ## Validation and remaining gates
 
 Run composer check, the exported archive validator and the independent offline consumer. The host release workflow re-runs the same quality gate. This embedded handoff records expectations; publication, external verification and consumer adoption remain separate observed events.
+
+Version 0.1.5 corrects the native_requirements capability value to null, as required by the authoritative schema for a PHP-only package. All three canonical manifests and this complete handoff are validated with pinned Ajv2020 and refusal regressions. Runtime/API/profile/corpus bytes remain unchanged; the published 0.1.4 release is preserved.
