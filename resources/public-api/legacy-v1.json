@@ -1,55 +1,87 @@
 {
-    "schema": "kumwe-package-public-api/v1",
+    "schema": 1,
     "package": "kumwe/conversion",
-    "release": "0.1.4",
     "namespace": "Kumwe\\Conversion\\",
-    "symbols": {
+    "profiles": {
+        "extension-provider-v1": {
+            "roots": [
+                "Kumwe\\Conversion\\Provider\\MoneyRateProvider",
+                "Kumwe\\Conversion\\Provider\\UnitConversionProvider"
+            ],
+            "types": [
+                "Kumwe\\Conversion\\Contract\\MoneyConversionRequest",
+                "Kumwe\\Conversion\\Contract\\UnitConversionRequest",
+                "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                "Kumwe\\Conversion\\Decimal\\ExactDecimalArithmetic",
+                "Kumwe\\Conversion\\Decimal\\ExactRoundingRule",
+                "Kumwe\\Conversion\\Provider\\MoneyRateProvider",
+                "Kumwe\\Conversion\\Provider\\MoneyRateUnavailable",
+                "Kumwe\\Conversion\\Provider\\UnitConversionProvider",
+                "Kumwe\\Conversion\\Provider\\UnitConversionUnavailable",
+                "Kumwe\\Conversion\\Value\\MoneyExchangeRate",
+                "Kumwe\\Conversion\\Value\\MoneyRoundingMode",
+                "Kumwe\\Conversion\\Value\\MoneyValue",
+                "Kumwe\\Conversion\\Value\\QuantityRoundingMode",
+                "Kumwe\\Conversion\\Value\\QuantityValue",
+                "Kumwe\\Conversion\\Value\\UnitConversionFactor"
+            ],
+            "digest": "sha256:c2e371b2da3d2f22c21e1be1c779dda339cb75e5070f1c594725d0e051751bd5"
+        }
+    },
+    "types": {
         "Kumwe\\Conversion\\Contract\\MoneyConversionRequest": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Contract/MoneyConversionRequest.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "amount": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyValue",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\MoneyValue"
                 },
                 "asAt": {
-                    "type": "DateTimeImmutable",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "DateTimeImmutable"
                 },
                 "precision": {
-                    "type": "int",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "int"
                 },
                 "rounding": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
                 },
                 "scale": {
-                    "type": "int",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "int"
                 },
                 "targetCurrency": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "amount",
@@ -94,11 +126,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "answeredBy": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "rate",
@@ -108,26 +143,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Contract\\MoneyConverter": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Contract/MoneyConverter.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "convert": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -144,26 +179,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Contract\\QuantityConverter": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Contract/QuantityConverter.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "convert": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -180,57 +215,63 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Contract\\UnitConversionRequest": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Contract/UnitConversionRequest.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "asAt": {
-                    "type": "DateTimeImmutable",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "DateTimeImmutable"
                 },
                 "precision": {
-                    "type": "int",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "int"
                 },
                 "quantity": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityValue",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\QuantityValue"
                 },
                 "rounding": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
                 },
                 "scale": {
-                    "type": "int",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "int"
                 },
                 "targetUnit": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "quantity",
@@ -275,11 +316,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "answeredBy": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "factor",
@@ -289,15 +333,12 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Decimal\\ExactDecimal": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Decimal/ExactDecimal.php",
             "abstract": false,
             "final": true,
             "readonly": true,
@@ -305,29 +346,37 @@
             "interfaces": [
                 "Stringable"
             ],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "precision": {
-                    "type": "int",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "int"
                 },
                 "scale": {
-                    "type": "int",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "int"
                 }
             },
             "methods": {
                 "__toString": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "string"
+                    "return_type": "string"
                 },
                 "compare": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "other",
@@ -337,11 +386,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "int"
+                    "return_type": "int"
                 },
                 "fromInt": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -365,11 +417,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "fromString": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -393,21 +448,21 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "value": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "string"
+                    "return_type": "string"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Decimal\\ExactDecimalArithmetic": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Decimal/ExactDecimalArithmetic.php",
             "abstract": false,
             "final": true,
             "readonly": false,
@@ -415,14 +470,20 @@
             "interfaces": [],
             "constants": {
                 "MAXIMUM_PRECISION": {
-                    "type": null
+                    "visibility": "public",
+                    "final": false,
+                    "type": null,
+                    "value": 65
                 }
             },
-            "properties": {},
+            "properties": [],
             "methods": {
                 "fromLiteral": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -432,11 +493,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "multiply": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "left",
@@ -453,11 +517,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "round": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -488,26 +555,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
+                    "return_type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Decimal\\ExactRoundingRule": {
             "kind": "interface",
-            "stability": "stable",
-            "file": "src/Decimal/ExactRoundingRule.php",
             "abstract": true,
             "final": false,
             "readonly": false,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "increments": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "firstDropped",
@@ -538,26 +605,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\MoneyConversionPipeline": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Provider/MoneyConversionPipeline.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "converter",
@@ -574,11 +641,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "convert": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -588,32 +658,35 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\MoneyRateProvider": {
             "kind": "interface",
-            "stability": "stable",
-            "file": "src/Provider/MoneyRateProvider.php",
             "abstract": true,
             "final": false,
             "readonly": false,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "identifier": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "string"
+                    "return_type": "string"
                 },
                 "rateFor": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -623,11 +696,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\MoneyExchangeRate"
+                    "return_type": "Kumwe\\Conversion\\Value\\MoneyExchangeRate"
                 },
                 "supports": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -637,26 +713,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\MoneyRateProviderCatalog": {
             "kind": "interface",
-            "stability": "stable",
-            "file": "src/Provider/MoneyRateProviderCatalog.php",
             "abstract": true,
             "final": false,
             "readonly": false,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "providersFor": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -666,15 +742,12 @@
                             "optional": false
                         }
                     ],
-                    "return": "array"
+                    "return_type": "array"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\MoneyRateUnavailable": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Provider/MoneyRateUnavailable.php",
             "abstract": false,
             "final": true,
             "readonly": false,
@@ -683,26 +756,26 @@
                 "Stringable",
                 "Throwable"
             ],
-            "constants": {},
-            "properties": {},
-            "methods": {},
-            "deprecated": null
+            "constants": [],
+            "properties": [],
+            "methods": []
         },
         "Kumwe\\Conversion\\Provider\\UnitConversionPipeline": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Provider/UnitConversionPipeline.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "converter",
@@ -719,11 +792,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "convert": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -733,26 +809,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\UnitConversionProvider": {
             "kind": "interface",
-            "stability": "stable",
-            "file": "src/Provider/UnitConversionProvider.php",
             "abstract": true,
             "final": false,
             "readonly": false,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "factorFor": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -762,17 +838,23 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\UnitConversionFactor"
+                    "return_type": "Kumwe\\Conversion\\Value\\UnitConversionFactor"
                 },
                 "identifier": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "string"
+                    "return_type": "string"
                 },
                 "supports": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -782,26 +864,26 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\UnitConversionProviderCatalog": {
             "kind": "interface",
-            "stability": "stable",
-            "file": "src/Provider/UnitConversionProviderCatalog.php",
             "abstract": true,
             "final": false,
             "readonly": false,
             "parent": null,
             "interfaces": [],
-            "constants": {},
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "providersFor": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": true,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "request",
@@ -811,15 +893,12 @@
                             "optional": false
                         }
                     ],
-                    "return": "array"
+                    "return_type": "array"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Provider\\UnitConversionUnavailable": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Provider/UnitConversionUnavailable.php",
             "abstract": false,
             "final": true,
             "readonly": false,
@@ -828,52 +907,57 @@
                 "Stringable",
                 "Throwable"
             ],
-            "constants": {},
-            "properties": {},
-            "methods": {},
-            "deprecated": null
+            "constants": [],
+            "properties": [],
+            "methods": []
         },
         "Kumwe\\Conversion\\Value\\ConvertedMoneyValue": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Value/ConvertedMoneyValue.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "converted": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyValue",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\MoneyValue"
                 },
                 "rate": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyExchangeRate",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\MoneyExchangeRate"
                 },
                 "rounding": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
                 },
                 "source": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyValue",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\MoneyValue"
                 },
                 "unrounded": {
-                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "source",
@@ -911,11 +995,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "detect": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -925,11 +1012,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "?Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
+                    "return_type": "?Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 },
                 "fromArray": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "data",
@@ -939,11 +1029,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 },
                 "fromPortableString": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -953,11 +1046,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedMoneyValue"
                 },
                 "isPortableString": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -967,64 +1063,75 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 },
                 "toArray": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "array"
+                    "return_type": "array"
                 },
                 "toPortableString": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "string"
+                    "return_type": "string"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Value\\ConvertedQuantityValue": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Value/ConvertedQuantityValue.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "converted": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityValue",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\QuantityValue"
                 },
                 "factor": {
-                    "type": "Kumwe\\Conversion\\Value\\UnitConversionFactor",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\UnitConversionFactor"
                 },
                 "rounding": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
                 },
                 "source": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityValue",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Value\\QuantityValue"
                 },
                 "unrounded": {
-                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "source",
@@ -1062,11 +1169,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "fromArray": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "data",
@@ -1076,11 +1186,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
                 },
                 "fromPortableString": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -1090,11 +1203,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
+                    "return_type": "Kumwe\\Conversion\\Value\\ConvertedQuantityValue"
                 },
                 "isPortableString": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -1104,27 +1220,30 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 },
                 "toArray": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "array"
+                    "return_type": "array"
                 },
                 "toPortableString": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "string"
+                    "return_type": "string"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Value\\MoneyExchangeRate": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Value/MoneyExchangeRate.php",
             "abstract": false,
             "final": true,
             "readonly": true,
@@ -1132,40 +1251,51 @@
             "interfaces": [],
             "constants": {
                 "INSTANT_FORMAT": {
-                    "type": null
+                    "visibility": "public",
+                    "final": false,
+                    "type": null,
+                    "value": "Y-m-d\\TH:i:s.uP"
                 }
             },
             "properties": {
                 "asAt": {
-                    "type": "DateTimeImmutable",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "DateTimeImmutable"
                 },
                 "baseCurrency": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 },
                 "provider": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 },
                 "quoteCurrency": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 },
                 "rate": {
-                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "baseCurrency",
@@ -1203,11 +1333,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "fromArray": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "data",
@@ -1217,11 +1350,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\MoneyExchangeRate"
+                    "return_type": "Kumwe\\Conversion\\Value\\MoneyExchangeRate"
                 },
                 "instant": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -1231,21 +1367,21 @@
                             "optional": false
                         }
                     ],
-                    "return": "DateTimeImmutable"
+                    "return_type": "DateTimeImmutable"
                 },
                 "toArray": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "array"
+                    "return_type": "array"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Value\\MoneyRoundingMode": {
             "kind": "enum",
-            "stability": "stable",
-            "file": "src/Value/MoneyRoundingMode.php",
             "abstract": false,
             "final": true,
             "readonly": false,
@@ -1255,31 +1391,15 @@
                 "Kumwe\\Conversion\\Decimal\\ExactRoundingRule",
                 "UnitEnum"
             ],
-            "constants": {
-                "Ceiling": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
-                },
-                "Floor": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
-                },
-                "HalfDown": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
-                },
-                "HalfEven": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
-                },
-                "HalfUp": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
-                },
-                "Truncate": {
-                    "type": "Kumwe\\Conversion\\Value\\MoneyRoundingMode"
-                }
-            },
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "increments": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "firstDropped",
@@ -1310,37 +1430,68 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
             },
-            "deprecated": null
+            "enum": {
+                "backing_type": "string",
+                "cases": [
+                    {
+                        "name": "HalfUp",
+                        "value": "half_up"
+                    },
+                    {
+                        "name": "HalfDown",
+                        "value": "half_down"
+                    },
+                    {
+                        "name": "HalfEven",
+                        "value": "half_even"
+                    },
+                    {
+                        "name": "Ceiling",
+                        "value": "ceiling"
+                    },
+                    {
+                        "name": "Floor",
+                        "value": "floor"
+                    },
+                    {
+                        "name": "Truncate",
+                        "value": "truncate"
+                    }
+                ]
+            }
         },
         "Kumwe\\Conversion\\Value\\MoneyValue": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Value/MoneyValue.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "amount": {
-                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "currency": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "amount",
@@ -1357,21 +1508,21 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "toArray": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "array"
+                    "return_type": "array"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Value\\QuantityRoundingMode": {
             "kind": "enum",
-            "stability": "stable",
-            "file": "src/Value/QuantityRoundingMode.php",
             "abstract": false,
             "final": true,
             "readonly": false,
@@ -1381,31 +1532,15 @@
                 "Kumwe\\Conversion\\Decimal\\ExactRoundingRule",
                 "UnitEnum"
             ],
-            "constants": {
-                "Ceiling": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
-                },
-                "Floor": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
-                },
-                "HalfDown": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
-                },
-                "HalfEven": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
-                },
-                "HalfUp": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
-                },
-                "Truncate": {
-                    "type": "Kumwe\\Conversion\\Value\\QuantityRoundingMode"
-                }
-            },
-            "properties": {},
+            "constants": [],
+            "properties": [],
             "methods": {
                 "increments": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "firstDropped",
@@ -1436,37 +1571,68 @@
                             "optional": false
                         }
                     ],
-                    "return": "bool"
+                    "return_type": "bool"
                 }
             },
-            "deprecated": null
+            "enum": {
+                "backing_type": "string",
+                "cases": [
+                    {
+                        "name": "HalfUp",
+                        "value": "half_up"
+                    },
+                    {
+                        "name": "HalfDown",
+                        "value": "half_down"
+                    },
+                    {
+                        "name": "HalfEven",
+                        "value": "half_even"
+                    },
+                    {
+                        "name": "Ceiling",
+                        "value": "ceiling"
+                    },
+                    {
+                        "name": "Floor",
+                        "value": "floor"
+                    },
+                    {
+                        "name": "Truncate",
+                        "value": "truncate"
+                    }
+                ]
+            }
         },
         "Kumwe\\Conversion\\Value\\QuantityValue": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Value/QuantityValue.php",
             "abstract": false,
             "final": true,
             "readonly": true,
             "parent": null,
             "interfaces": [],
-            "constants": {},
+            "constants": [],
             "properties": {
                 "amount": {
-                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "unit": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "amount",
@@ -1483,21 +1649,21 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "toArray": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "array"
+                    "return_type": "array"
                 }
-            },
-            "deprecated": null
+            }
         },
         "Kumwe\\Conversion\\Value\\UnitConversionFactor": {
             "kind": "class",
-            "stability": "stable",
-            "file": "src/Value/UnitConversionFactor.php",
             "abstract": false,
             "final": true,
             "readonly": true,
@@ -1505,43 +1671,57 @@
             "interfaces": [],
             "constants": {
                 "INSTANT_FORMAT": {
-                    "type": "string"
+                    "visibility": "public",
+                    "final": false,
+                    "type": "string",
+                    "value": "Y-m-d\\TH:i:s.uP"
                 },
                 "UNIT_PATTERN": {
-                    "type": "string"
+                    "visibility": "public",
+                    "final": false,
+                    "type": "string",
+                    "value": "/^[A-Za-z0-9][A-Za-z0-9._\\/-]{0,62}$/D"
                 }
             },
             "properties": {
                 "asAt": {
-                    "type": "DateTimeImmutable",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "DateTimeImmutable"
                 },
                 "factor": {
-                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "Kumwe\\Conversion\\Decimal\\ExactDecimal"
                 },
                 "provider": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 },
                 "sourceUnit": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 },
                 "targetUnit": {
-                    "type": "string",
+                    "visibility": "public",
                     "static": false,
-                    "readonly": true
+                    "readonly": true,
+                    "type": "string"
                 }
             },
             "methods": {
                 "__construct": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "sourceUnit",
@@ -1579,11 +1759,14 @@
                             "optional": false
                         }
                     ],
-                    "return": null
+                    "return_type": null
                 },
                 "fromArray": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "data",
@@ -1593,11 +1776,14 @@
                             "optional": false
                         }
                     ],
-                    "return": "Kumwe\\Conversion\\Value\\UnitConversionFactor"
+                    "return_type": "Kumwe\\Conversion\\Value\\UnitConversionFactor"
                 },
                 "instant": {
                     "visibility": "public",
                     "static": true,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [
                         {
                             "name": "value",
@@ -1607,24 +1793,18 @@
                             "optional": false
                         }
                     ],
-                    "return": "DateTimeImmutable"
+                    "return_type": "DateTimeImmutable"
                 },
                 "toArray": {
                     "visibility": "public",
                     "static": false,
+                    "final": false,
+                    "abstract": false,
+                    "returns_reference": false,
                     "parameters": [],
-                    "return": "array"
+                    "return_type": "array"
                 }
-            },
-            "deprecated": null
+            }
         }
-    },
-    "extension_points": [
-        "Kumwe\\Conversion\\Decimal\\ExactRoundingRule",
-        "Kumwe\\Conversion\\Provider\\MoneyRateProvider",
-        "Kumwe\\Conversion\\Provider\\MoneyRateProviderCatalog",
-        "Kumwe\\Conversion\\Provider\\UnitConversionProvider",
-        "Kumwe\\Conversion\\Provider\\UnitConversionProviderCatalog"
-    ],
-    "digest_of": "src"
+    }
 }

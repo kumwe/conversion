@@ -23,7 +23,7 @@ extension API, and the promises below are what keep "drop-in" true release after
    requires an exact release, never a range. A contract change reaches the App only as a
    deliberate re-pin with its own review and evidence — the same discipline the App applies to its
    Studio pin.
-2. **The package manifest is the authority.** This package's `resources/public-api/v1.json` owns
+2. **The package manifest is the authority.** This package's `resources/public-api/legacy-v1.json` owns
    every canonical public type shape and the `extension-provider-v1` profile. The App copies none
    of those shapes: its consumer record stores only `kumwe/conversion`, the profile identifier, the
    reviewed digest, and the type count. On every build its consumer gate recomputes the digest from
@@ -77,7 +77,7 @@ remains as the historical record of what moved where; each canonical name is und
 | `Provider\MoneyConversionPipeline` | `BusinessRecord\Application\MoneyConversionPipeline` |
 | `Provider\UnitConversionPipeline` | `BusinessRecord\Application\UnitConversionPipeline` |
 
-The package's `resources/public-api/v1.json` owns the extension-facing
+The package's `resources/public-api/legacy-v1.json` owns the extension-facing
 `extension-provider-v1` profile. Its two roots are `MoneyRateProvider` and
 `UnitConversionProvider`; its fifteen-type closure also includes the request and evidence classes,
 both rounding modes and their shared rule, exact-decimal construction, the money and quantity values,
@@ -121,3 +121,5 @@ protocol, and delivered as a versioned release the App re-pins deliberately — 
 workaround in the App, and never a quiet widening here. The reverse also holds: an App need that
 is really SPI, storage, or presentation is the App's to build, and this package will not grow an
 opinion about it.
+
+Version 0.1.4 reserves `resources/public-api/v1.json` for the standard governed API schema. A later App adoption must update any existing profile reader to `resources/public-api/legacy-v1.json` while retaining the established `extension-provider-v1` digest and closure. The compatibility file preserves the 0.1.3 profile bytes exactly; runtime types and signatures do not change.

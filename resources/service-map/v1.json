@@ -1,28 +1,11 @@
 {
-  "schema": 1,
-  "package": "kumwe/conversion",
-  "release": "0.1.4",
-  "mode": "direct",
-  "provider": null,
-  "factories": [],
-  "aliases": [],
-  "configuration_keys": [],
-  "services": [],
-  "construction": {
-    "Kumwe\\Conversion\\Provider\\MoneyConversionPipeline": {
-      "constructor_dependencies": [
-        "Kumwe\\Conversion\\Contract\\MoneyConverter",
-        "Kumwe\\Conversion\\Provider\\MoneyRateProviderCatalog"
-      ],
-      "lifetime": "Caller-owned; do not share a host catalog across incompatible authority/request scopes."
-    },
-    "Kumwe\\Conversion\\Provider\\UnitConversionPipeline": {
-      "constructor_dependencies": [
-        "Kumwe\\Conversion\\Contract\\QuantityConverter",
-        "Kumwe\\Conversion\\Provider\\UnitConversionProviderCatalog"
-      ],
-      "lifetime": "Caller-owned; do not share a host catalog across incompatible authority/request scopes."
-    }
-  },
-  "provider_absence_reason": "The final readonly pipelines add no mutable operation state and receive explicitly constructed converters and host-owned catalogs. The library cannot choose a safe catalog, authorization scope or lifetime. Hosts construct pipelines directly; no ambient discovery, container defaults, request capture or empty provider is introduced."
+    "schema": "kumwe-package-service-map/v1",
+    "package": "kumwe/conversion",
+    "release": "0.1.4",
+    "config_provider": null,
+    "provider_absence_reason": "The final readonly pipelines add no mutable operation state and receive explicitly constructed converters and host-owned catalogs. The library cannot choose a safe catalog, authorization scope or lifetime. Hosts construct pipelines directly; no ambient discovery, container defaults, request capture or empty provider is introduced.",
+    "factories": [],
+    "aliases": {},
+    "delegators": [],
+    "configuration_keys": []
 }

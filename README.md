@@ -48,7 +48,7 @@ composer check
 
 The behavioural suite is dependency-free and can also be run directly with `php tests/run.php`.
 The complete public shape of all twenty-three canonical types is recorded in
-[`resources/public-api/v1.json`](resources/public-api/v1.json), and `composer api` rejects
+[`resources/public-api/legacy-v1.json`](resources/public-api/legacy-v1.json), and `composer api` rejects
 unrecorded drift. Its `extension-provider-v1` profile identifies the exact fifteen-type transitive
 surface required by provider implementations.
 
@@ -59,3 +59,5 @@ Licensed under the [Apache License, Version 2.0](LICENSE).
 ## Version 2 adoption handoff
 
 The [migration handoff](MIGRATION-HANDOFF.md) records the exact package ownership, historical rename map, public manifests and next consumer task. Read the [complete public API reference](docs/public-api.md), [construction/lifetime decision](docs/architecture.md) and [standalone integration guide](docs/integration.md). The library uses explicit direct construction; host-owned catalogs are never discovered or registered globally. Independent post-publication verification produces the external release attestation; this release does not claim App adoption or native cutover.
+
+The governed [public API manifest](resources/public-api/v1.json) uses the standard `kumwe-package-public-api/v1` schema for automatic package adoption. The previous API/profile document remains byte-identical at [the legacy compatibility path](resources/public-api/legacy-v1.json). `composer metadata` checks the canonical projection, ownership, construction rationale and handoff hashes; `composer clean-consumer` compares every exported path and byte against Git and installs that ZIP as a fresh no-dev dependency.

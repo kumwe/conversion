@@ -28,7 +28,7 @@ final class PublicApiManifestTest extends TestCase
      */
     public function testManifestPinsOnlyTheCanonicalSurface(): void
     {
-        $path = dirname(__DIR__, 2) . '/resources/public-api/v1.json';
+        $path = dirname(__DIR__, 2) . '/resources/public-api/legacy-v1.json';
         $bytes = file_get_contents($path);
         $this->assertTrue(is_string($bytes), 'The public API generation pin must be readable.');
 

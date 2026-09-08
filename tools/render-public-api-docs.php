@@ -6,11 +6,18 @@ declare(strict_types=1);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 $root = dirname(__DIR__);
-$manifest = json_decode((string) file_get_contents($root . '/resources/public-api/v1.json'), true, 64, JSON_THROW_ON_ERROR);
+$manifest = json_decode(
+    (string) file_get_contents($root . '/resources/public-api/legacy-v1.json'),
+    true,
+    64,
+    JSON_THROW_ON_ERROR,
+);
 $output = "# Conversion public API\n\n";
-$output .= "Every stable type and declared member below is generated from the checked API manifest and source PHPDoc.\n";
+$output .= "Every stable type and declared member below is generated from the checked API manifest "
+    . "and source PHPDoc.\n";
 $output .= "See [architecture](architecture.md) for layering, host-owned catalogs, lifetimes and side effects.\n";
-$output .= "The canonical decimal corpus defines exact cross-language output/refusal behavior; rates and rounding are inputs.\n\n";
+$output .= "The canonical decimal corpus defines exact cross-language output/refusal behavior; "
+    . "rates and rounding are inputs.\n\n";
 
 /** Strip PHPDoc decoration while retaining all behavior, parameters and refusal details. @since 0.1.4 */
 function publicApiDoc(string|false $comment): string
@@ -26,7 +33,13 @@ function publicApiDoc(string|false $comment): string
 foreach ($manifest['types'] as $name => $type) {
     $reflection = new ReflectionClass($name);
     $output .= '## ' . $name . "\n\n" . publicApiDoc($reflection->getDocComment()) . "\n\n";
-    $output .= 'Kind: `' . $type['kind'] . '`; source: `src/' . str_replace('\\', '/', substr($name, 17)) . ".php`.\n\n";
+    $output .= 'Kind: `' . $type['kind'] . '`; source: `src/'
+        . str_replace('\\', '/', substr($name, 17)) . ".php`.\n\n";
+    if (isset($type['enum'])) {
+        $output .= "### Enum representation and cases\n\n```json\n";
+        $output .= json_encode($type['enum'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $output .= "\n```\n\n";
+    }
     foreach (['constants' => 'Constants', 'properties' => 'Properties'] as $key => $label) {
         if ($type[$key] !== []) {
             $output .= '### ' . $label . "\n\n```json\n";

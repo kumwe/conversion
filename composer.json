@@ -15,7 +15,8 @@
     "phpstan/phpstan": "^2.1",
     "phpstan/phpstan-deprecation-rules": "^2.0",
     "phpstan/phpstan-strict-rules": "^2.0",
-    "squizlabs/php_codesniffer": "^4.0"
+    "squizlabs/php_codesniffer": "^4.0",
+    "ext-zip": "*"
   },
   "autoload": {
     "psr-4": {
@@ -44,18 +45,26 @@
       "@docs",
       "@architecture",
       "@api",
+      "@metadata",
+      "@api:docs",
       "@autoload:smoke",
       "@cs",
       "@analyse",
       "@test:ownership",
       "@test",
       "@release-record",
-      "@release:integrity"
+      "@release:integrity",
+      "@archive:test",
+      "@clean-consumer"
     ],
     "test:ownership": "php tools/verify-test-ownership.php --self-test",
     "architecture": "php tools/verify-architecture.php",
     "release-record": "bash tools/test-release-record.sh",
-    "release:integrity": "bash tools/test-release-integrity.sh"
+    "release:integrity": "bash tools/test-release-integrity.sh",
+    "metadata": "php tools/verify-v2-metadata.php",
+    "api:docs": "php tools/render-public-api-docs.php",
+    "clean-consumer": "php tools/verify-clean-consumer.php",
+    "archive:test": "php tools/test-archive.php"
   },
   "config": {
     "sort-packages": true

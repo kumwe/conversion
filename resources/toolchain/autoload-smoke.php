@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $autoload = $root . '/vendor/autoload.php';
-$manifestPath = $root . '/resources/public-api/v1.json';
+$manifestPath = $root . '/resources/public-api/legacy-v1.json';
 
 if (!is_file($autoload)) {
     fwrite(STDERR, "Composer autoload smoke failed: vendor/autoload.php is missing.\n");

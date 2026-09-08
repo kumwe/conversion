@@ -138,7 +138,7 @@ skips it. CI then removes every development package, rebuilds an authoritative p
 and loads all twenty-three manifest types again, proving the distributed library does not rely on its
 quality toolchain.
 
-[`resources/public-api/v1.json`](../resources/public-api/v1.json) records all twenty-three public
+[`resources/public-api/legacy-v1.json`](../resources/public-api/legacy-v1.json) records all twenty-three public
 types, including class/interface/enum identity, inheritance, constants, properties, methods,
 parameters, return types, and enum cases. `composer api` compares source against that record. A
 reviewed compatible addition or successor surface is recorded explicitly with `composer
