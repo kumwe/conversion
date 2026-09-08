@@ -25,7 +25,7 @@
       "Existing kumwe/conversion v0.1.3 at e95d5633722929e77b73005f8c44cfe4d99ac8c3 supplies unchanged public API and decimal corpus baseline."
     ],
     "active_related_pull_requests": [
-      "https://github.com/kumwe/conversion/pull/11",
+      "https://github.com/kumwe/conversion/pull/12",
       "https://github.com/kumwe/extension-sdk/pull/15"
     ]
   },
@@ -34,7 +34,7 @@
     "artifact_identity": "kumwe/conversion",
     "canonical_namespace_or_abi": "Kumwe\\Conversion\\",
     "branch": "fix/governed-capability-schema",
-    "pull_request": "https://github.com/kumwe/conversion/pull/11"
+    "pull_request": "https://github.com/kumwe/conversion/pull/12"
   },
   "ownership": {
     "responsibility": "Exact decimal/value/conversion behavior and provider ports with explicit caller-supplied evidence.",
