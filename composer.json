@@ -45,6 +45,7 @@
       "@docs",
       "@architecture",
       "@api",
+      "@schemas",
       "@metadata",
       "@api:docs",
       "@autoload:smoke",
@@ -64,7 +65,8 @@
     "metadata": "php tools/verify-v2-metadata.php",
     "api:docs": "php tools/render-public-api-docs.php",
     "clean-consumer": "php tools/verify-clean-consumer.php",
-    "archive:test": "php tools/test-archive.php"
+    "archive:test": "php tools/test-archive.php",
+    "schemas": "node tools/schema-validator/verify.cjs"
   },
   "config": {
     "sort-packages": true

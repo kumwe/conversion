@@ -9,6 +9,12 @@ passes on a clean clone.
   identify residual App library-unit tests and ordered dependency updates for the integration phase.
 - Correct provider-definition ownership and the SDK manifest/binding replacement for withdrawn registrars.
 
+## 0.1.5 — 2026-09-08
+
+- Correct the canonical capability native_requirements value to null for the PHP-only runtime.
+- Validate all three canonical manifests and the complete v2 handoff against authoritative schema snapshots with pinned Ajv2020; exercise rejection fixtures for malformed and incomplete contracts.
+- Preserve all runtime API/profile and decimal corpus bytes; this successor corrects governance metadata without replacing the published 0.1.4 release.
+
 ## 0.1.4 — 2026-09-08
 
 - Add the complete v2 migration handoff, capability/construction manifests, public API reference and standalone consumer example.

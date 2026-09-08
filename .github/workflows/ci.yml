@@ -45,6 +45,11 @@ jobs:
           composer install --no-interaction --prefer-dist
           composer audit --abandoned=fail
 
+      - name: Install and audit the pinned schema validator
+        run: |
+          npm ci --prefix tools/schema-validator --ignore-scripts
+          npm audit --prefix tools/schema-validator --audit-level=low
+
       - name: Run the complete package gate
         run: composer check
 
