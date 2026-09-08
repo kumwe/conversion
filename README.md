@@ -55,3 +55,7 @@ surface required by provider implementations.
 ## License
 
 Licensed under the [Apache License, Version 2.0](LICENSE).
+
+## Version 2 adoption handoff
+
+The [migration handoff](MIGRATION-HANDOFF.md) records the exact package ownership, historical rename map, public manifests and next consumer task. Read the [complete public API reference](docs/public-api.md), [construction/lifetime decision](docs/architecture.md) and [standalone integration guide](docs/integration.md). The library uses explicit direct construction; host-owned catalogs are never discovered or registered globally. Independent post-publication verification produces the external release attestation; this release does not claim App adoption or native cutover.

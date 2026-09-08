@@ -9,6 +9,12 @@ passes on a clean clone.
   identify residual App library-unit tests and ordered dependency updates for the integration phase.
 - Correct provider-definition ownership and the SDK manifest/binding replacement for withdrawn registrars.
 
+## 0.1.4 — 2026-09-08
+
+- Add the complete v2 migration handoff, capability/construction manifests, public API reference and standalone consumer example.
+- Preserve the 23-type API, PHP-only runtime requirements and decimal corpus unchanged; document direct construction and host catalog lifetimes.
+- Ship and verify adoption documentation and manifest/handoff digests in the consumer archive.
+
 ## 0.1.3 — 2026-09-07
 
 - Unify PR and post-rebase release gates, dynamic release identity, tested publication retries,

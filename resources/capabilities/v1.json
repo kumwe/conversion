@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "package": "kumwe/conversion",
+  "release": "0.1.4",
+  "namespace": "Kumwe\\Conversion\\",
+  "capabilities": [
+    {
+      "id": "exact-decimal/v1",
+      "responsibility": "Bounded canonical decimal strings, exact arithmetic and explicitly supplied rounding rules.",
+      "public_types": [
+        "Kumwe\\Conversion\\Decimal\\ExactDecimal",
+        "Kumwe\\Conversion\\Decimal\\ExactDecimalArithmetic",
+        "Kumwe\\Conversion\\Decimal\\ExactRoundingRule"
+      ]
+    },
+    {
+      "id": "evidenced-conversion/v1",
+      "responsibility": "Typed money/quantity conversion with caller-supplied rates, factors, as-at instant and rounding; converted results preserve provenance.",
+      "public_types": [
+        "Kumwe\\Conversion\\Contract\\MoneyConversionRequest",
+        "Kumwe\\Conversion\\Contract\\MoneyConverter",
+        "Kumwe\\Conversion\\Contract\\QuantityConverter",
+        "Kumwe\\Conversion\\Contract\\UnitConversionRequest",
+        "Kumwe\\Conversion\\Provider\\MoneyConversionPipeline",
+        "Kumwe\\Conversion\\Provider\\MoneyRateProvider",
+        "Kumwe\\Conversion\\Provider\\MoneyRateProviderCatalog",
+        "Kumwe\\Conversion\\Provider\\MoneyRateUnavailable",
+        "Kumwe\\Conversion\\Provider\\UnitConversionPipeline",
+        "Kumwe\\Conversion\\Provider\\UnitConversionProvider",
+        "Kumwe\\Conversion\\Provider\\UnitConversionProviderCatalog",
+        "Kumwe\\Conversion\\Provider\\UnitConversionUnavailable",
+        "Kumwe\\Conversion\\Value\\ConvertedMoneyValue",
+        "Kumwe\\Conversion\\Value\\ConvertedQuantityValue",
+        "Kumwe\\Conversion\\Value\\MoneyExchangeRate",
+        "Kumwe\\Conversion\\Value\\MoneyRoundingMode",
+        "Kumwe\\Conversion\\Value\\MoneyValue",
+        "Kumwe\\Conversion\\Value\\QuantityRoundingMode",
+        "Kumwe\\Conversion\\Value\\QuantityValue",
+        "Kumwe\\Conversion\\Value\\UnitConversionFactor"
+      ]
+    }
+  ],
+  "non_responsibilities": [
+    "Provider discovery or authorization",
+    "Rate or unit-conversion tables",
+    "Persistence, site policy and presentation",
+    "Native extension provisioning or native computation cutover"
+  ],
+  "corpora": [
+    {
+      "path": "resources/conformance/decimal-v1.tsv",
+      "profile": "kumwe-decimal/1"
+    }
+  ]
+}
