@@ -13,7 +13,8 @@ passes on a clean clone.
 
 - Add the complete v2 migration handoff, capability/construction manifests, public API reference and standalone consumer example.
 - Preserve the 23-type API, PHP-only runtime requirements and decimal corpus unchanged; document direct construction and host catalog lifetimes.
-- Ship and verify adoption documentation and manifest/handoff digests in the consumer archive.
+- Publish the canonical API schema at resources/public-api/v1.json; preserve the established profile bytes at resources/public-api/legacy-v1.json and document the consumer path update.
+- Ship and verify adoption documentation and manifest/handoff digests in the consumer archive; compare its complete exported path and byte inventory with Git before a fresh no-dev install.
 
 ## 0.1.3 — 2026-09-07
 

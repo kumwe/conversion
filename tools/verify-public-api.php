@@ -17,7 +17,7 @@ declare(strict_types=1);
 const CONVERSION_API_ROOT = __DIR__ . '/..';
 const CONVERSION_API_SOURCE = CONVERSION_API_ROOT . '/src';
 const CONVERSION_API_PREFIX = 'Kumwe\\Conversion\\';
-const CONVERSION_API_MANIFEST = CONVERSION_API_ROOT . '/resources/public-api/v1.json';
+const CONVERSION_API_MANIFEST = CONVERSION_API_ROOT . '/resources/public-api/legacy-v1.json';
 const CONVERSION_API_EXTENSION_PROVIDER_TYPES = [
     'Kumwe\\Conversion\\Contract\\MoneyConversionRequest',
     'Kumwe\\Conversion\\Contract\\UnitConversionRequest',

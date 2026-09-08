@@ -2385,6 +2385,40 @@ conversion is declared and exported in.
 
 Kind: `enum`; source: `src/Value/MoneyRoundingMode.php`.
 
+### Enum representation and cases
+
+```json
+{
+    "backing_type": "string",
+    "cases": [
+        {
+            "name": "HalfUp",
+            "value": "half_up"
+        },
+        {
+            "name": "HalfDown",
+            "value": "half_down"
+        },
+        {
+            "name": "HalfEven",
+            "value": "half_even"
+        },
+        {
+            "name": "Ceiling",
+            "value": "ceiling"
+        },
+        {
+            "name": "Floor",
+            "value": "floor"
+        },
+        {
+            "name": "Truncate",
+            "value": "truncate"
+        }
+    ]
+}
+```
+
 ### increments
 
 ```text
@@ -2559,6 +2593,40 @@ own terms and a payload can never claim a currency rule rounded a weight.
 @since  0.1.0
 
 Kind: `enum`; source: `src/Value/QuantityRoundingMode.php`.
+
+### Enum representation and cases
+
+```json
+{
+    "backing_type": "string",
+    "cases": [
+        {
+            "name": "HalfUp",
+            "value": "half_up"
+        },
+        {
+            "name": "HalfDown",
+            "value": "half_down"
+        },
+        {
+            "name": "HalfEven",
+            "value": "half_even"
+        },
+        {
+            "name": "Ceiling",
+            "value": "ceiling"
+        },
+        {
+            "name": "Floor",
+            "value": "floor"
+        },
+        {
+            "name": "Truncate",
+            "value": "truncate"
+        }
+    ]
+}
+```
 
 ### increments
 

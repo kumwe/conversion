@@ -24,6 +24,9 @@ try {
     runConsumerCommand(['composer', '--working-dir=' . $root, 'archive', '--format=zip',
         '--dir=' . $workspace, '--file=candidate']);
     $archive = $workspace . '/candidate.zip';
+    // A staged Git tree may be supplied for local review; hosted gates compare the exact checked-out HEAD.
+    runConsumerCommand([PHP_BINARY, $root . '/tools/verify-archive.php', $archive,
+        getenv('KUMWE_ARCHIVE_SOURCE_TREE') ?: 'HEAD']);
     $zip = new ZipArchive();
     if ($zip->open($archive) !== true) {
         throw new RuntimeException('Cannot inspect the built archive.');
@@ -35,7 +38,7 @@ try {
     }
     for ($index = 0; $index < $zip->numFiles; $index++) {
         $path = $zip->getNameIndex($index);
-        if (!is_string($path) || preg_match('~^(?:tests|vendor|\.github|\.git)/~D', $path) === 1) {
+        if (!is_string($path) || preg_match('~^(?:tests|tools|vendor|\.github|\.git)/~D', $path) === 1) {
             throw new RuntimeException('Archive contains development state: ' . (string) $path);
         }
     }

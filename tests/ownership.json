@@ -1,7 +1,7 @@
 {
   "schema": "kumwe-test-ownership/v1",
   "package": "kumwe/conversion",
-  "api_manifest": "resources/public-api/v1.json",
+  "api_manifest": "resources/public-api/legacy-v1.json",
   "suite": {
     "inventory_command": [
       "php",
