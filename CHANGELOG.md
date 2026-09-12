@@ -1,15 +1,13 @@
 # Changelog
 
+Delivered package changes, newest first. A change is recorded here only after its stated proof
+passes on a clean clone.
+
 ## Unreleased
 
 - Add live package, CI, PHP and license badges and current consumer documentation.
 - Replace completed extraction handover and roadmap with the strict production release record.
 - Preserve canonical API/profile/corpus validation and archive checks under the durable record path.
-
-Delivered package changes, newest first. A change is recorded here only after its stated proof
-passes on a clean clone.
-
-## Unreleased
 
 - Reconcile the extraction roadmap with the current App pin and canonical production ownership;
   identify residual App library-unit tests and ordered dependency updates for the integration phase.
