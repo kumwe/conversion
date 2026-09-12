@@ -110,9 +110,8 @@ The suite exists to prove intended outcomes, and only that. The standard for eve
    identity, and its declared rounding; that the pipeline refuses a misattributed, mispriced, or
    postdated answer; and that provenance survives every published round trip (`toArray` /
    `fromArray`, portable string in and out) byte for byte.
-4. **The App's exact corpus is the spine of extraction.** Behaviour the App already proves is
-   re-proven here by replaying the equivalent cases, so a divergence from the code being replaced is
-   a red suite, not a review comment.
+4. **The exact conformance corpus defines compatibility.** Replay consumer cases in the owning
+   package so changes to established decimal and conversion semantics fail the behavioral suite.
 5. **No frivolous tests.** A test that cannot fail for a reason a user would care about — a getter
    returning what the constructor took, asserting a class exists — must not be written. Coverage is
    a consequence of testing outcomes, never a goal pursued for its own number.
@@ -121,8 +120,8 @@ The suite exists to prove intended outcomes, and only that. The standard for eve
 
 ## Documentation
 
-- Every document states behaviour that exists; plans live in [`docs/roadmap.md`](roadmap.md) and
-  nowhere else. A claim the check lane cannot back is a defect in the document.
+- Every document states behaviour that exists; open work is tracked in GitHub issues.
+  A claim the check lane cannot back is a defect in the document.
 - Wrap prose at roughly 100 columns; sentence-case headings; link with relative paths; write for
   the reader who arrives with no context, because the next implementer may be an agent with nothing
   but this repository.

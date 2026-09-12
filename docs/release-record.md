@@ -1,10 +1,9 @@
 ---
 {
-  "schema": "kumwe-migration-handoff/v2",
+  "schema": "kumwe-package-release-record/v1",
   "artifact_kind": "framework_php",
   "migration_id": "KUMWE-MIG-2026-031",
   "change_set": "KUMWE-CS-2026-031",
-  "state": "draft_pr_open",
   "source": {
     "app": {
       "repository": "https://github.com/kumwe/app",
@@ -23,18 +22,12 @@
     "examined_dependencies": [
       "PHP-only runtime; no Kumwe or third-party runtime dependency.",
       "Existing kumwe/conversion v0.1.3 at e95d5633722929e77b73005f8c44cfe4d99ac8c3 supplies unchanged public API and decimal corpus baseline."
-    ],
-    "active_related_pull_requests": [
-      "https://github.com/kumwe/conversion/pull/12",
-      "https://github.com/kumwe/extension-sdk/pull/15"
     ]
   },
   "target": {
     "repository": "https://github.com/kumwe/conversion",
     "artifact_identity": "kumwe/conversion",
-    "canonical_namespace_or_abi": "Kumwe\\Conversion\\",
-    "branch": "fix/governed-capability-schema",
-    "pull_request": "https://github.com/kumwe/conversion/pull/12"
+    "canonical_namespace_or_abi": "Kumwe\\Conversion\\"
   },
   "ownership": {
     "responsibility": "Exact decimal/value/conversion behavior and provider ports with explicit caller-supplied evidence.",
@@ -48,7 +41,7 @@
       "PHP"
     ],
     "implementation_owner": "kumwe/conversion",
-    "next_consumer": "Independent release verification, then compatible package consumers; App integration remains a later task.",
+    "next_consumer": "Extension SDK, conversion providers and host implementations including Kumwe Core, each qualified against an exact package release.",
     "public_manifests": [
       {
         "path": "resources/public-api/v1.json",
@@ -72,9 +65,9 @@
       }
     ],
     "intentionally_excluded": [
-      "All App source changes and duplicate-test deletion are deferred.",
-      "The runtime API and decimal corpus are unchanged from 0.1.3; its profile manifest is preserved byte-identically at resources/public-api/legacy-v1.json.",
-      "Host-owned catalogs and SPI activation remain outside this package."
+      "Host application source, provider authorization, persistence and presentation remain consumer-owned.",
+      "The canonical runtime API, compatibility profile and decimal corpus are governed by their recorded manifests.",
+      "Host catalogs and SPI activation remain outside this package."
     ]
   },
   "framework_php": {
@@ -629,7 +622,7 @@
     "changelog_record": "CHANGELOG.md 0.1.5"
   },
   "release_expectations": {
-    "version_policy": "Exact pre-1.0 pins; 0.1.5 corrects canonical schema metadata and enforces complete authoritative schemas without changing runtime/API/corpus.",
+    "version_policy": "Exact pre-1.0 pins with explicit compatibility qualification; public API and decimal corpus changes require reviewed versioned contracts.",
     "expected_artifact_types": [
       "GitHub source ZIP",
       "Composer archive"
@@ -644,21 +637,28 @@
     "required_registry_or_installer": "Packagist kumwe/conversion",
     "required_external_attestation": true
   },
-  "next_task": {
-    "phase_name": "Independent release verification and compatible package dependency train",
+  "governance": {
+    "completion_claim": false
+  },
+  "decisions": [
+    "JSON-compatible YAML permits dependency-free package metadata checks.",
+    "Release identity and archive digests are established externally from published bytes.",
+    "Stateless pipelines do not certify collaborator concurrency or authority scopes."
+  ],
+  "blockers": [],
+  "consumer_contract": {
     "permitted_only_when": [
-      "0.1.5 is actually published and exact source/tag/archive/registry identities pass independent verification.",
-      "The external RELEASE-ATTESTATION.yaml accompanies this released handoff."
+      "The exact published source/tag/archive/registry identities pass independent verification.",
+      "External RELEASE-ATTESTATION.yaml binds the release record, manifests and corpus."
     ],
     "consumer_repository": "https://github.com/kumwe/extension-sdk",
-    "dependency_or_native_change": "Reconcile the complete compatible PHP package graph to exact Conversion 0.1.5 only after release verification; do not modify App in this train.",
+    "dependency_or_native_change": "Resolve the consumer graph to a qualified exact Conversion release; provider catalogs and native provisioning remain host-owned.",
     "namespace_or_api_replacements": [
       "None in this release; the existing canonical 23-type namespace is unchanged."
     ],
     "files_to_update": [
-      "composer.json",
-      "composer.lock",
-      "Package-owned release dependency/readiness metadata and changelog records"
+      "Consumer composer.json and composer.lock",
+      "Consumer package ownership and release evidence"
     ],
     "files_to_remove": [],
     "tests_to_remove": [],
@@ -671,7 +671,7 @@
       "None; direct constructor integration remains explicit."
     ],
     "capability_index_changes": [
-      "Record the new capability/service-map and handoff coordinates in consumer evidence; no App index edit in this task."
+      "Record the installed capability, service-map and release-record coordinates in consumer evidence."
     ],
     "changelog_and_evidence_changes": [
       "Record independent verification and dependency repin as separate observed states."
@@ -681,69 +681,53 @@
       "composer check",
       "COMPOSER_DISABLE_NETWORK=1 php tools/verify-clean-consumer.php"
     ]
-  },
-  "concurrency": {
-    "likely_conflict_files": [
-      "composer.json",
-      "CHANGELOG.md",
-      "MIGRATION-HANDOFF.md",
-      "resources/capabilities/v1.json",
-      "resources/service-map/v1.json"
-    ],
-    "related_migrations": [],
-    "ownership_conflicts": [],
-    "integration_train": null,
-    "resolution_rule": "semantic-preservation"
-  },
-  "governance": {
-    "roadmap_source_sha256": "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8",
-    "roadmap_refs": [],
-    "non_roadmap_refs": [],
-    "completion_claim": false
-  },
-  "decisions": [
-    "This is governance completion for an existing package, not a repeated source extraction.",
-    "The JSON front matter is a valid YAML 1.2 mapping and is checked without introducing a runtime YAML dependency.",
-    "No self commit/archive digest or future publication result is embedded.",
-    "Stateless package pipelines do not certify collaborator concurrency or authority scopes."
-  ],
-  "blockers": [
-    "Publication and independent external verification are required future events.",
-    "Dependent repins and all App integration remain separate work."
-  ]
+  }
 }
 ---
 
-## Migration/implementation summary
+# Conversion release contract record
 
-Version 0.1.4 adds the v2 handoff, capability/construction manifests and complete public API documentation. The 23 runtime types and decimal corpus remain byte-identical to 0.1.3. The canonical resources/public-api/v1.json now uses kumwe-package-public-api/v1; the previous manifest and extension-provider-v1 profile bytes are preserved at resources/public-api/legacy-v1.json. Future profile readers must use that explicit compatibility path. The historical rename inventory above is an existing adoption record, not a request to extract those App classes again.
+## Package contract
+
+The package owns exact decimals, typed amounts, conversion requests, pipelines and provider ports.
+It supplies no rates, unit tables, provider discovery or host authority.
 
 ## Public API and responsibility
 
-[Public API](docs/public-api.md) contains every source-owned public type/member contract. [Architecture](docs/architecture.md) describes dependency direction and the intentional direct construction mode. Converters are pure rules; pipeline collaborators remain host-owned.
+The [API reference](public-api.md) and [architecture](architecture.md) describe all 23 runtime types.
+The provider profile remains at `resources/public-api/legacy-v1.json`; the standard API projection
+is `resources/public-api/v1.json`. Both are digest-verified compatibility contracts.
 
-## Capability reuse/semantic input review
+## Dependencies and semantic inputs
 
-The package is PHP-only. It owns its decimal corpus and has no external semantic owner dependency. The existing public API profile and decimal corpus are verified against 0.1.3; no new rounding behavior, rates or tables are introduced.
+Production requires PHP only. Conversion owns its language-neutral decimal corpus and arithmetic
+semantics. Provider implementations supply rate or factor evidence and caller-selected rounding.
 
-## Consumer inventory
+## Consumer contract
 
-[App agreement](docs/app-agreement.md) lists all 23 historical renames and retained host SPI/catalog ownership. The independently read App snapshot already pins Conversion 0.1.2. Its ExactDecimalTest is a duplicate candidate; other consumer tests require an explicit assertion-by-assertion review before removal. This PR edits no App files.
+The [Core/App agreement](app-agreement.md) retains the exact pin protocol, canonical symbol map,
+provider profile and consumer authority boundaries. Historical source baselines are provenance;
+consumers inspect current sources before replacing duplicate implementations or tests.
 
 ## Test ownership
 
-The existing package suite owns decimal/value/converter/provider behavior, refusal boundaries and the language-neutral corpus. [Test ownership](docs/test-ownership.md) records the mapped tests. Consumer host authority, persistence, lifecycle, HTTP/CLI and composition tests remain in their owners. Metadata and source-generated docs gain drift gates.
+Package tests own decimal/value/converter/pipeline behavior and refusal boundaries. Hosts retain
+authorization, persistence, lifecycle, presentation, HTTP/CLI and composition acceptance tests.
+See [test ownership](test-ownership.md).
 
-## Next-task execution notes
+## Consumer verification
 
-First verify the actual published 0.1.5 source/tag/archive/Packagist tuple, handoff/manifest/corpus digests, security and no-dev archive consumer. Store external evidence outside this package. Then release the compatible dependent package graph. Later App adoption refreshes its source baseline, exact-repins through Composer, and removes only proven duplicate unit tests; native cutover remains Computation-owned.
+Verify actual published source, tag, archive, registry and manifest/corpus identities. Install the
+original ZIP without development requirements, run its examples, and replay the same lock offline.
+Store independent evidence separately from the package.
 
-## Concurrency and conflict record
+## Compatibility and drift
 
-Coordinate Composer pins and release metadata across current package PRs. Preserve existing runtime API, compatibility profile and decimal corpus bytes. Recompute every public-manifest handoff digest after a metadata edit and rerun the final-head gates. No future tag/commit is assumed.
+Maintain the complete canonical API, provider profile and decimal corpus. Manifest changes require
+explicit digest updates and compatible consumer pins. Native acceleration belongs to Computation
+and Engine and does not change this PHP package ownership.
 
-## Validation and remaining gates
+## Validation
 
-Run composer check, the exported archive validator and the independent offline consumer. The host release workflow re-runs the same quality gate. This embedded handoff records expectations; publication, external verification and consumer adoption remain separate observed events.
-
-Version 0.1.5 corrects the native_requirements capability value to null, as required by the authoritative schema for a PHP-only package. All three canonical manifests and this complete handoff are validated with pinned Ajv2020 and refusal regressions. Runtime/API/profile/corpus bytes remain unchanged; the published 0.1.4 release is preserved.
+Run `composer check`, `composer clean-consumer` and the release automation regressions.
+The source record states requirements; external attestations establish release qualification.

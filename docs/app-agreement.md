@@ -1,9 +1,8 @@
 # The App agreement
 
-This document records the working agreement between `kumwe/conversion` and its first consumer,
-[Kumwe App](https://github.com/kumwe/app). It exists so that neither repository has to guess: the
-App adopted this package as a drop-in replacement for code it had already published and pinned as
-extension API, and the promises below are what keep "drop-in" true release after release.
+This document defines the contract between `kumwe/conversion` and
+[Kumwe Core/App](https://github.com/kumwe/app): exact dependency pins, canonical API ownership,
+provider compatibility and host responsibilities.
 
 ## Roles
 
@@ -31,7 +30,7 @@ extension API, and the promises below are what keep "drop-in" true release after
    without an alias. A release whose profile does not match that record is not adoptable; an
    incompatible provider-facing surface requires a deliberately reviewed successor profile and App
    consumer record.
-3. **Identity is proven on every re-pin.** The package-owned extraction corpus and public-API
+3. **Identity is proven on every re-pin.** The package-owned conformance corpus and public-API
    manifest are the first acceptance test. The App may delete only tests that duplicate that corpus;
    its retained unit, integration, functional, and architecture assertions remain unchanged. A pin
    that needs a retained App assertion edited is refused, and the difference is a finding in this
@@ -87,7 +86,7 @@ canonical package and profile, its reviewed digest, and the fifteen-type count. 
 package types are not extension-provider surface, but every historical App name is retired with the
 same finality: no published third-party consumer exists to break.
 
-The later extraction assigns `UnitConversionProviderDefinition` and `MoneyRateProviderDefinition`
+Canonical ownership assigns `UnitConversionProviderDefinition` and `MoneyRateProviderDefinition`
 to `kumwe/conversion-extension` under `Kumwe\Conversion\Contribution`. SDK signed
 `contributions.integration.rate_providers` and `unit_converters` declarations, together with
 `ExtensionBindingRegistrar::moneyRateProvider()` and `unitConversionProvider()`, supersede the old

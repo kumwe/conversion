@@ -21,10 +21,10 @@ const parseHandoff = text => {
 const documents = new Map();
 for (const kind of ['public-api', 'capabilities', 'service-map', 'handoff']) {
   const schemaPath = 'tools/schemas/' + (kind === 'handoff'
-    ? 'migration-handoff.v2.schema.json' : 'package-' + kind + '.v1.schema.json');
+    ? 'package-release-record.v1.schema.json' : 'package-' + kind + '.v1.schema.json');
   const schema = JSON.parse(read(schemaPath));
   const validate = ajv.compile(schema);
-  const value = kind === 'handoff' ? parseHandoff(read('MIGRATION-HANDOFF.md'))
+  const value = kind === 'handoff' ? parseHandoff(read('docs/release-record.md'))
     : JSON.parse(read('resources/' + kind + '/v1.json'));
   if (!validate(value)) throw new Error(kind + ': ' + ajv.errorsText(validate.errors, { separator: '\n' }));
   documents.set(kind, { value, validate });
@@ -47,5 +47,5 @@ reject('handoff', value => { value.source.app.baseline_commit = 'not-a-commit'; 
 reject('handoff', value => { value.artifact_kind = 'unrecognized'; });
 assert.throws(() => parseHandoff('---\n{"blockers": ["unterminated]}\n---\n'), SyntaxError);
 assert.throws(() => parseHandoff('---\n{}\n'), /closing front-matter boundary/);
-console.log('All 3 canonical manifests and full v2 handoff satisfy authoritative Draft 2020-12 schemas.');
+console.log('All 3 canonical manifests and full release record satisfy authoritative Draft 2020-12 schemas.');
 console.log('Schema gate passed 12 malformed, missing-field, nullability and front-matter refusal fixtures.');

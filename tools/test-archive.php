@@ -61,7 +61,7 @@ try {
     copy(__DIR__ . '/verify-archive.php', $root . '/tools/verify-archive.php');
     $names = [
         'composer.json', 'resources/public-api/v1.json', 'resources/public-api/legacy-v1.json',
-        'resources/capabilities/v1.json', 'resources/service-map/v1.json', 'MIGRATION-HANDOFF.md',
+        'resources/capabilities/v1.json', 'resources/service-map/v1.json', 'docs/release-record.md',
         'docs/public-api.md', 'docs/integration.md', 'examples/direct-construction.php',
         'src/Sample.php', 'README.md',
     ];

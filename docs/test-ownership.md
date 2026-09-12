@@ -4,6 +4,7 @@ The package's `tests/ownership.json` maps every published type to the actual pac
 
 Evidence references identify responsibility; they are not a claim of 100% line, branch or input coverage. Ports with no runtime implementation own their signatures and vocabulary here; concrete host implementations retain their execution tests. Package tests use neutral fixtures and adapters, and never bootstrap Kumwe App.
 
-The legacy extraction is already adopted in App at baseline 960ce8ec00cf724a7cae03e5ba09c4852c9ab54e. The current App tests inspected exercise host composition, authority, persistence, delivery, lifecycle or recovery. No whole current App test file is identified for removal by this patch. Future extraction handoffs must list exact pure tests to remove or mixed tests to split on adoption. A dependency bump alone is not authorization to delete host acceptance tests.
-
-The published decimal TSV is the package-owned reusable corpus for its exact-decimal profile. Native implementations replay exact pinned release/corpus bytes.
+Core retains host composition, authority, persistence, delivery, lifecycle and recovery tests.
+The canonical decimal corpus and pure package behavior belong here; consumers remove duplicate
+unit tests only after verifying their assertions are covered by this package. A dependency update
+does not justify deleting host acceptance tests.

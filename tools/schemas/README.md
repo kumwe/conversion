@@ -10,3 +10,9 @@ The complete schemas are executed by pinned Ajv2020; do not replace them with fi
 | package-capabilities.v1.schema.json | ea796c665d1f530385a2e44c2f218ae94645173d863bc30502219166f51d5c17 |
 | package-public-api.v1.schema.json | e31a87785248174701fcee11095a0f676debe76370e17e99e84c127a034f7996 |
 | package-service-map.v1.schema.json | 826df42be526cb761df2e2f0aed4b4d5fa5421164b7093752a243e893d42090f |
+
+The current `package-release-record.v1.schema.json` is maintained by
+[Extension SDK](https://github.com/kumwe/extension-sdk/pull/21). It preserves the
+full API, manifest, native, construction, test and consumer validation while removing
+completed task, branch and roadmap fields. The pinned historical v2 schema above is
+retained as provenance; current records use `kumwe-package-release-record/v1`.

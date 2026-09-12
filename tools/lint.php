@@ -3,9 +3,8 @@
 /**
  * Syntax-check every PHP file in the library, its tests, and its tooling.
  *
- * Dependency-free so the lane runs before any composer install. Directories
- * that do not exist yet — src/ before the first extraction phase lands — are
- * simply skipped, so the founding state is a passing state.
+ * Dependency-free so the lane runs before any Composer install.
+ * Only existing source, test and tooling directories are inspected.
  *
  * @since 0.1.0
  */
