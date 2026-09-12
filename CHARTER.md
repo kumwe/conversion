@@ -134,8 +134,8 @@ The protocol both repositories follow is recorded in [`docs/app-agreement.md`](d
 
 ## Governance
 
-Work is recorded in [`docs/roadmap.md`](docs/roadmap.md) while open and in `CHANGELOG.md` when
-delivered; a claim states only what the check lane proves on a clean clone. The check lane is
+Open work is tracked in [GitHub issues](https://github.com/kumwe/conversion/issues);
+delivered changes are recorded in `CHANGELOG.md`. Claims require clean-clone verification. The check lane is
 `composer check`: Composer metadata/autoload, the frozen public API, lint, style, PHPStan max,
 documentation completeness, and the dependency-free behavioural suite. Every commit passes it.
 The engineering rules live in

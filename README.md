@@ -1,5 +1,10 @@
 # Kumwe Conversion
 
+[![Packagist version][badge-packagist-version-image]][badge-packagist-version-link]
+[![CI][badge-ci-image]][badge-ci-link]
+[![PHP][badge-php-image]][badge-php-link]
+[![License][badge-license-image]][badge-license-link]
+
 **Canonical contracts for exact money and quantity conversion. Providers supply rates; hosts supply
 policy and wiring.**
 
@@ -32,7 +37,7 @@ that cannot prove its own provenance is refused.
 
 ## Installation and verification
 
-Install the published library from
+Requires PHP 8.5. Install the published library from
 [Packagist](https://packagist.org/packages/kumwe/conversion):
 
 ```bash
@@ -56,10 +61,32 @@ surface required by provider implementations.
 
 Licensed under the [Apache License, Version 2.0](LICENSE).
 
-## Version 2 adoption handoff
+## API, Core integration and releases
 
-The [migration handoff](MIGRATION-HANDOFF.md) records the exact package ownership, historical rename map, public manifests and next consumer task. Read the [complete public API reference](docs/public-api.md), [construction/lifetime decision](docs/architecture.md) and [standalone integration guide](docs/integration.md). The library uses explicit direct construction; host-owned catalogs are never discovered or registered globally. Independent post-publication verification produces the external release attestation; this release does not claim App adoption or native cutover.
+Read the [complete API reference](docs/public-api.md), [construction and lifetime contract](docs/architecture.md),
+[standalone integration guide](docs/integration.md) and [Core/App agreement](docs/app-agreement.md).
+The library uses explicit construction; host-owned catalogs are never discovered or registered globally.
+The [direct construction example](examples/direct-construction.php) shows pipeline composition.
 
-The governed [public API manifest](resources/public-api/v1.json) uses the standard `kumwe-package-public-api/v1` schema for automatic package adoption. The previous API/profile document remains byte-identical at [the legacy compatibility path](resources/public-api/legacy-v1.json). `composer metadata` checks the canonical projection, ownership, construction rationale and handoff hashes; `composer clean-consumer` compares every exported path and byte against Git and installs that ZIP as a fresh no-dev dependency.
+The [public API manifest](resources/public-api/v1.json), capabilities and service map describe the
+current package surface. Provider-profile consumers use the preserved
+[compatibility manifest](resources/public-api/legacy-v1.json). `composer metadata` verifies ownership,
+construction and [release-record](docs/release-record.md) digests; `composer clean-consumer` compares
+every exported path and byte with Git and installs that ZIP as a fresh no-dev dependency.
 
-Source quality checks also require Node.js 20+ and `npm ci --prefix tools/schema-validator --ignore-scripts`. The pinned Ajv2020 gate validates the complete authoritative API, capability, service-map and handoff schemas before release. Production consumers still require only PHP.
+Source quality checks additionally require Node.js 20+ and
+`npm ci --prefix tools/schema-validator --ignore-scripts`. The pinned Ajv2020 gate validates
+complete API, capability, service-map and release-record schemas. Production requires only PHP.
+
+See [releases](https://github.com/kumwe/conversion/releases), [release policy](docs/releasing.md),
+[changes](CHANGELOG.md) and [issues](https://github.com/kumwe/conversion/issues). Publication,
+independent release verification and Core integration are separate observations.
+
+[badge-packagist-version-image]: https://img.shields.io/packagist/v/kumwe/conversion
+[badge-packagist-version-link]: https://packagist.org/packages/kumwe/conversion
+[badge-ci-image]: https://github.com/kumwe/conversion/actions/workflows/ci.yml/badge.svg?branch=main
+[badge-ci-link]: https://github.com/kumwe/conversion/actions/workflows/ci.yml
+[badge-php-image]: https://img.shields.io/packagist/dependency-v/kumwe/conversion/php
+[badge-php-link]: composer.json
+[badge-license-image]: https://img.shields.io/packagist/l/kumwe/conversion
+[badge-license-link]: LICENSE

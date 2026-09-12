@@ -105,12 +105,12 @@ $require(
     is_string($services['provider_absence_reason']) && $services['provider_absence_reason'] !== '',
     'provider rationale',
 );
-$handoffBytes = (string) file_get_contents($root . '/MIGRATION-HANDOFF.md');
+$handoffBytes = (string) file_get_contents($root . '/docs/release-record.md');
 $parts = explode("\n---\n", $handoffBytes, 2);
 $require(str_starts_with($parts[0], "---\n") && count($parts) === 2, 'v2 handoff front matter');
 // The handoff deliberately uses JSON-compatible YAML 1.2 for dependency-free verification.
 $handoff = json_decode(substr($parts[0], 4), true, 512, JSON_THROW_ON_ERROR);
-$require($handoff['schema'] === 'kumwe-migration-handoff/v2', 'handoff schema identity');
+$require($handoff['schema'] === 'kumwe-package-release-record/v1', 'handoff schema identity');
 $require($handoff['framework_php']['composer_package'] === $composer['name'], 'handoff package identity');
 $require($handoff['framework_php']['public_api_manifest'] === 'resources/public-api/v1.json', 'canonical API location');
 $observed = [];
